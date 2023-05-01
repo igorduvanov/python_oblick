@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FastAPI Application</title>
+    <script>
+        async function addOdvumir() {
+            const response = await fetch('/odvumir/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    "name": "New Unit",
+                    "notes": "Sample Note"
+                })
+            });
+
+            if (response.ok) {
+                alert('New Odvumir added successfully!');
+            } else {
+                alert('Error: ' + response.statusText);
+            }
+        }
+    </script>
+</head>
+<body>
+    <h1>FastAPI Application</h1>
+    <button onclick="addOdvumir()">Add Odvumir</button>
+</body>
+</html>

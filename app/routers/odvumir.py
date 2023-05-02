@@ -4,17 +4,25 @@ from app.models.odvumir import Odvumir
 from app.schemas import OdvumirCreate, OdvumirUpdate, OdvumirInDB
 from app.database import get_db
 from typing import List
-
+from pydantic import BaseModel
+from datetime import datetime
 router = APIRouter()
 
+class OdvumirOut(BaseModel):
+    id: int
+    name: str
+    notes: str
+    date_created: datetime
+    date_updated: datetime
+
 # Create
-@router.post("/", response_model=OdvumirInDB)
+@router.post("/", response_model=OdvumirOut)
 def create_odvumir(odvumir: OdvumirCreate, db: Session = Depends(get_db)):
     new_odvumir = Odvumir(**odvumir.dict())
     db.add(new_odvumir)
     db.commit()
     db.refresh(new_odvumir)
-    return new_odvumir
+    return OdvumirOut.from_orm(new_odvumir)
 
 # Read
 @router.get("/{odvumir_id}", response_model=OdvumirInDB)

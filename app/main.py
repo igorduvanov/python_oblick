@@ -9,21 +9,11 @@ from sqlalchemy.orm import Session
 from fastapi import Depends
 from app.database import SessionLocal
 from app.models.odvumir import Odvumir
-
+from app.database import get_db, SessionLocal
 
 app = FastAPI()
 
-# Add this function to handle the database sessions
-def get_db():
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
-
 templates = Jinja2Templates(directory="app/templates")
-
-@app.get("/")
 
 @app.get("/", response_class=HTMLResponse)
 async def read_root(request: Request):
@@ -33,13 +23,29 @@ class OdvumirCreate(BaseModel):
     name: str
     notes: str
 
-@app.post("/odvumir/")
-async def create_odvumir(odvumir: OdvumirCreate, db: Session = Depends(get_db)):
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
+
+def create_odvumir_in_db(odvumir: OdvumirCreate, db: Session):
     new_odvumir = Odvumir(name=odvumir.name, notes=odvumir.notes)
     db.add(new_odvumir)
     db.commit()
     db.refresh(new_odvumir)
     return new_odvumir
+
+@app.post("/odvumir/")
+async def create_odvumir(odvumir: OdvumirCreate, db: Session = Depends(get_db)):
+    new_odvumir = create_odvumir_in_db(odvumir, db)
+    return new_odvumir
+
+@app.get("/odvumir_page", response_class=HTMLResponse)
+async def read_odvumir_page(request: Request, db: Session = Depends(get_db)):
+    odvumirs = db.query(Odvumir).all()
+    return templates.TemplateResponse("odvumir_page.html", {"request": request, "odvumirs": odvumirs})
 
 app.include_router(odvumir.router, prefix="/odvumir", tags=["odvumir"])
 #app.include_router(oper.router, prefix="/oper", tags=["oper"])

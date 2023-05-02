@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>Odvumir CRUD operations</h1>
+
+    <form id="odvumirForm">
+        <input type="text" name="name" placeholder="Name">
+        <input type="text" name="notes" placeholder="Notes">
+        <button type="button" onclick="submitForm()">Add</button>
+    </form>
+
+    <h2>Odvumir data:</h2>
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Notes</th>
+        </tr>
+        {% for odvumir in odvumirs %}
+            <tr>
+                <td>{{ odvumir.id }}</td>
+                <td>{{ odvumir.name }}</td>
+                <td>{{ odvumir.notes }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    async function submitForm() {
+        const form = document.getElementById('odvumirForm');
+        const formData = new FormData(form);
+        const jsonData = {};
+
+        for (const [key, value] of formData.entries()) {
+            jsonData[key] = value;
+        }
+
+        const response = await fetch('/odvumir/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(jsonData)
+        });
+
+        if (response.ok) {
+            // Handle success, e.g., reload the page or display a message
+            window.location.reload();
+        } else {
+            // Handle errors
+            console.error('Error:', response.statusText);
+        }
+    }
+</script>
+{% endblock %}

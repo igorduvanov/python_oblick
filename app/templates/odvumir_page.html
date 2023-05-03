@@ -6,7 +6,7 @@
     <form id="odvumirForm">
         <input type="text" name="name" placeholder="Name">
         <input type="text" name="notes" placeholder="Notes">
-        <button type="button" onclick="submitForm()">Add</button>
+        <button type="button" onclick="submitForm()">добавити</button>
     </form>
 
     <h2>Odvumir data:</h2>
@@ -21,6 +21,10 @@
                 <td>{{ odvumir.id }}</td>
                 <td>{{ odvumir.name }}</td>
                 <td>{{ odvumir.notes }}</td>
+                <td>
+                    <button onclick="editOdvumir({{ odvumir.id }})">Edit</button>
+                    <button onclick="deleteOdvumir({{ odvumir.id }})">Delete</button>
+                </td>
             </tr>
         {% endfor %}
     </table>
@@ -50,6 +54,45 @@
             window.location.reload();
         } else {
             // Handle errors
+            console.error('Error:', response.statusText);
+        }
+    }
+    async function editOdvumir(odvumirId) {
+        const name = prompt("введіть нове name:");
+        const notes = prompt("введіть нове notes:");
+
+        const jsonData = {
+            name: name,
+            notes: notes
+        };
+
+        const response = await fetch(`/odvumir/${odvumirId}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(jsonData)
+        });
+
+        if (response.ok) {
+            window.location.reload();
+        } else {
+            console.error('Error:', response.statusText);
+        }
+    }
+
+    async function deleteOdvumir(odvumirId) {
+        if (!confirm('Ви дійсно хочете видалити цей Odvumir?')) {
+            return;
+        }
+
+        const response = await fetch(`/odvumir/${odvumirId}`, {
+            method: 'DELETE',
+        });
+
+        if (response.ok) {
+            window.location.reload();
+        } else {
             console.error('Error:', response.statusText);
         }
     }

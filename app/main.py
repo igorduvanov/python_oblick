@@ -47,6 +47,26 @@ async def read_odvumir_page(request: Request, db: Session = Depends(get_db)):
     odvumirs = db.query(Odvumir).all()
     return templates.TemplateResponse("odvumir_page.html", {"request": request, "odvumirs": odvumirs})
 
+@app.put("/odvumir/{odvumir_id}")
+async def update_odvumir(odvumir_id: int, odvumir: OdvumirCreate, db: Session = Depends(get_db)):
+    db_odvumir = db.query(Odvumir).filter(Odvumir.id == odvumir_id).first()
+    if not db_odvumir:
+        raise HTTPException(status_code=404, detail="Odvumir not found")
+    db_odvumir.name = odvumir.name
+    db_odvumir.notes = odvumir.notes
+    db.commit()
+    db.refresh(db_odvumir)
+    return db_odvumir
+
+@app.delete("/odvumir/{odvumir_id}")
+async def delete_odvumir(odvumir_id: int, db: Session = Depends(get_db)):
+    db_odvumir = db.query(Odvumir).filter(Odvumir.id == odvumir_id).first()
+    if not db_odvumir:
+        raise HTTPException(status_code=404, detail="Odvumir not found")
+    db.delete(db_odvumir)
+    db.commit()
+    return {"detail": "Odvumir deleted"}
+
 app.include_router(odvumir.router, prefix="/odvumir", tags=["odvumir"])
 #app.include_router(oper.router, prefix="/oper", tags=["oper"])
 #app.include_router(robitnuk.router, prefix="/robitnuk", tags=["robitnuk"])

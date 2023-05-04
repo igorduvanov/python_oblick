@@ -7,7 +7,7 @@ from app.models.base import Base
 class Oper(Base):
     __tablename__ = 'opers'
     id = Column(Integer, primary_key=True, index=True)                      #
-    name = Column(String)                                                   # назва одиниці виміру
+    name = Column(String)                                                   # операції по стандарту
     cod = Column(String)                                                    #
     date_created = Column(DateTime(), default=datetime.utcnow)
     date_updated = Column(DateTime(), default=datetime.today)

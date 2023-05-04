@@ -9,7 +9,8 @@ class OdvumirCreate(OdvumirBase):
     pass
 
 class OdvumirUpdate(OdvumirBase):
-    pass
+    name: Optional[str] = None
+    notes: Optional[str] = None
 
 class OdvumirInDB(OdvumirBase):
     id: int

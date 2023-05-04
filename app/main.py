@@ -20,12 +20,6 @@ templates = Jinja2Templates(directory="app/templates")
 async def read_root(request: Request):
     return templates.TemplateResponse("index.html", {"request": request})
 
-class OdvumirCreate(BaseModel):
-    name: str
-    notes: str
-
-
-
 
 
 app.include_router(odvumir.router, prefix="/odvumir", tags=["odvumir"])

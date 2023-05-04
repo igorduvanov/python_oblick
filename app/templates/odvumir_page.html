@@ -1,29 +1,45 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h1>Odvumir CRUD operations</h1>
+    <h1>одиниці виміру CRUD операції</h1>
 
     <form id="odvumirForm">
-        <input type="text" name="name" placeholder="Name">
-        <input type="text" name="notes" placeholder="Notes">
+        <input type="text" name="name" placeholder="Назва">
+        <input type="text" name="notes" placeholder="Нотатки">
         <button type="button" onclick="submitForm()">добавити</button>
     </form>
 
-    <h2>Odvumir data:</h2>
+    <h2>одиниці виміру </h2>
+    <form id="searchForm" onsubmit="event.preventDefault(); searchAndSort();">
+        <input type="text" name="search" placeholder="Пошук за назвою" value="{{ search if search }}">
+        <select name="sort_by">
+            <option value="">Сортувати за роком</option>
+            <option value="year_asc" {% if sort_by == "year_asc" %}selected{% endif %}>За зростанням</option>
+            <option value="year_desc" {% if sort_by == "year_desc" %}selected{% endif %}>За спаданням</option>
+        </select>
+        <button type="submit">Пошук і сортування</button>
+    </form>
+    
     <table>
         <tr>
             <th>ID</th>
-            <th>Name</th>
-            <th>Notes</th>
+            <th>Назва</th>
+            <th>Нотатки</th>
+            <th>Дата створена</th>
+            <th>Дата оновлена</th>
+            <th>Дії</th>
         </tr>
         {% for odvumir in odvumirs %}
             <tr>
                 <td>{{ odvumir.id }}</td>
                 <td>{{ odvumir.name }}</td>
                 <td>{{ odvumir.notes }}</td>
+                <td>{{ odvumir.date_created.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+                <td>{{ odvumir.date_updated.strftime('%Y-%m-%d %H:%M:%S') }}</td>
                 <td>
-                    <button onclick="editOdvumir({{ odvumir.id }})">Edit</button>
-                    <button onclick="deleteOdvumir({{ odvumir.id }})">Delete</button>
+                    <button onclick="editOdvumirName({{ odvumir.id }})">редагувати назву</button>
+                    <button onclick="editOdvumirNotes({{ odvumir.id }})">Редагувати нотатки</button>
+                    <button onclick="deleteOdvumir({{ odvumir.id }})">Видалити</button>
                 </td>
             </tr>
         {% endfor %}
@@ -32,6 +48,13 @@
 
 {% block scripts %}
 <script>
+     function searchAndSort() {
+        const searchForm = document.getElementById('searchForm');
+        const formData = new FormData(searchForm);
+        const searchParams = new URLSearchParams(formData);
+
+        window.location.href = `/odvumir/odvumir_page?${searchParams.toString()}`;
+    }
     async function submitForm() {
         const form = document.getElementById('odvumirForm');
         const formData = new FormData(form);
@@ -56,17 +79,17 @@
             console.error('Error:', response.statusText);
         }
     }
-    async function editOdvumir(odvumirId) {
-        const name = prompt("введіть нове name:");
-        const notes = prompt("введіть нове notes:");
+    async function editOdvumirName(odvumirId) {
+        const newName = prompt("введіть нову назву (порожньо, щоб не змінювати):");
 
-        const jsonData = {
-            name: name,
-            notes: notes
-        };
+        const jsonData = {};
+
+        if (newName !== "") {
+            jsonData["name"] = newName;
+        }
 
         const response = await fetch(`/odvumir/odvumir/${odvumirId}`, {
-        method: 'PUT',
+            method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
             },
@@ -80,8 +103,33 @@
         }
     }
 
+    async function editOdvumirNotes(odvumirId) {
+        const newNotes = prompt("введіть нову нотатки (порожньо, щоб не змінювати):");
+
+        const jsonData = {};
+
+        if (newNotes !== "") {
+            jsonData["notes"] = newNotes;
+        }
+
+        const response = await fetch(`/odvumir/odvumir/${odvumirId}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(jsonData)
+        });
+
+        if (response.ok) {
+            window.location.reload();
+        } else {
+            console.error('Error:', response.statusText);
+        }
+    }
+
+
     async function deleteOdvumir(odvumirId) {
-        if (!confirm('Ви дійсно хочете видалити цей Odvumir?')) {
+        if (!confirm('Ви дійсно хочете видалити цю одиницю виміру?')) {
             return;
         }
 

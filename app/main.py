@@ -10,6 +10,7 @@ from fastapi import Depends
 from app.database import SessionLocal
 from app.models.odvumir import Odvumir
 from app.database import get_db, SessionLocal
+from app.templates import templates
 
 app = FastAPI()
 
@@ -23,49 +24,9 @@ class OdvumirCreate(BaseModel):
     name: str
     notes: str
 
-def get_db():
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
 
-def create_odvumir_in_db(odvumir: OdvumirCreate, db: Session):
-    new_odvumir = Odvumir(name=odvumir.name, notes=odvumir.notes)
-    db.add(new_odvumir)
-    db.commit()
-    db.refresh(new_odvumir)
-    return new_odvumir
 
-@app.post("/odvumir/")
-async def create_odvumir(odvumir: OdvumirCreate, db: Session = Depends(get_db)):
-    new_odvumir = create_odvumir_in_db(odvumir, db)
-    return new_odvumir
 
-@app.get("/odvumir_page", response_class=HTMLResponse)
-async def read_odvumir_page(request: Request, db: Session = Depends(get_db)):
-    odvumirs = db.query(Odvumir).all()
-    return templates.TemplateResponse("odvumir_page.html", {"request": request, "odvumirs": odvumirs})
-
-@app.put("/odvumir/{odvumir_id}")
-async def update_odvumir(odvumir_id: int, odvumir: OdvumirCreate, db: Session = Depends(get_db)):
-    db_odvumir = db.query(Odvumir).filter(Odvumir.id == odvumir_id).first()
-    if not db_odvumir:
-        raise HTTPException(status_code=404, detail="Odvumir not found")
-    db_odvumir.name = odvumir.name
-    db_odvumir.notes = odvumir.notes
-    db.commit()
-    db.refresh(db_odvumir)
-    return db_odvumir
-
-@app.delete("/odvumir/{odvumir_id}")
-async def delete_odvumir(odvumir_id: int, db: Session = Depends(get_db)):
-    db_odvumir = db.query(Odvumir).filter(Odvumir.id == odvumir_id).first()
-    if not db_odvumir:
-        raise HTTPException(status_code=404, detail="Odvumir not found")
-    db.delete(db_odvumir)
-    db.commit()
-    return {"detail": "Odvumir deleted"}
 
 app.include_router(odvumir.router, prefix="/odvumir", tags=["odvumir"])
 #app.include_router(oper.router, prefix="/oper", tags=["oper"])

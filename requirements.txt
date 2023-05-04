@@ -1,2 +1,46 @@
 fastapi[all]
 sqlalchemy
+
+
+python_oblick/
+│
+├── app/
+│   ├── main.py
+│   ├── models/
+│   │   ├── __init__.py
+│   │   ├── base.py
+│   │   ├── odvumir.py
+│   │   ├── oper.py
+│   │   ├── robitnuk.py
+│   │   ├── perelik.py
+│   │   ├── material.py
+│   │   ├── price.py
+│   │   ├── nakladna.py
+│   │   ├── operation.py
+│   │   ├── resur.py
+│   │   ├── marshryt.py
+│   │   └── denzvit.py
+│   ├── routers/
+│   │   ├── __init__.py
+│   │   ├── odvumir.py
+│   │   ├── oper.py
+│   │   ├── robitnuk.py
+│   │   ├── perelik.py
+│   │   ├── material.py
+│   │   ├── price.py
+│   │   ├── nakladna.py
+│   │   ├── operation.py
+│   │   ├── resur.py
+│   │   ├── marshryt.py
+│   │   └── denzvit.py
+│   ├── templates/
+│   │   ├── base.html
+│   │   ├── index.html
+│   │   ├── odvumir_page.html
+│   ├── schemas.py
+│   ├── config.py
+│   ├── DB.db
+│   ├── templates.py
+│   └── database.py
+│
+└── requirements.txt

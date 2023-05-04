@@ -40,12 +40,11 @@
         for (const [key, value] of formData.entries()) {
             jsonData[key] = value;
         }
-
-        const response = await fetch('/odvumir/', {
+        const response = await fetch('/odvumir/odvumir/', {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
-            },
+           'Content-Type': 'application/json'
+             },
             body: JSON.stringify(jsonData)
         });
 
@@ -66,8 +65,8 @@
             notes: notes
         };
 
-        const response = await fetch(`/odvumir/${odvumirId}`, {
-            method: 'PUT',
+        const response = await fetch(`/odvumir/odvumir/${odvumirId}`, {
+        method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
             },
@@ -86,8 +85,8 @@
             return;
         }
 
-        const response = await fetch(`/odvumir/${odvumirId}`, {
-            method: 'DELETE',
+        const response = await fetch(`/odvumir/odvumir/${odvumirId}`, {
+             method: 'DELETE',
         });
 
         if (response.ok) {

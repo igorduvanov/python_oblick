@@ -17,7 +17,7 @@ async def read_root(request: Request):
 
 app.include_router(odvumir.router, prefix="/odvumir", tags=["odvumir"])
 app.include_router(oper.router, prefix="/oper", tags=["oper"])
-#app.include_router(robitnuk.router, prefix="/robitnuk", tags=["robitnuk"])
+app.include_router(robitnuk.router, prefix="/robitnuk", tags=["robitnuk"])
 #app.include_router(perelik.router, prefix="/perelik", tags=["perelik"])
 #app.include_router(material.router, prefix="/material", tags=["material"])
 #app.include_router(price.router, prefix="/price", tags=["price"])

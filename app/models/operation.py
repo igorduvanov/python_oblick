@@ -10,7 +10,7 @@ class Operation(Base):
     id = Column(Integer, primary_key=True, index=True)                      #
     id_perelik = Column(Integer, ForeignKey("pereliks.id"))                 # 
     id_oper = Column(Integer, ForeignKey("opers.id"))                       # 
-    date_created = Column(DateTime(), default=datetime.utcnow)
-    date_updated = Column(DateTime(), default=datetime.today)
     Perelik = relationship("Perelik")
     Oper = relationship("Oper")
+    date_created = Column(DateTime(), default=datetime.utcnow)
+    date_updated = Column(DateTime(), default=datetime.today)

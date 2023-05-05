@@ -1,6 +1,9 @@
 fastapi[all]
 sqlalchemy
-
+Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope Process
+uvicorn app.main:app --reload
+.\venv\Scripts\Activate
+c:/xampp/htdocs/python_oblick/venv/Scripts/Activate.ps1    
 
 python_oblick/
 │
@@ -37,7 +40,6 @@ python_oblick/
 │   │   ├── base.html
 │   │   ├── index.html
 │   │   ├── odvumir_page.html
-│   ├── schemas.py
 │   ├── config.py
 │   ├── DB.db
 │   ├── templates.py

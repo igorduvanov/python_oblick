@@ -1,8 +1,6 @@
-import datetime
-from click import DateTime
-from sqlalchemy import Column, Integer, String
+from sqlalchemy import Column, Integer, String, DateTime
 from app.models.base import Base
-
+from datetime import datetime
 
 class Oper(Base):
     __tablename__ = 'opers'

@@ -1,0 +1,176 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>таблиця переліку для CRUD операцій</h1>
+
+    <form id="perelikForm">
+        <input type="text" name="coding" placeholder="Кодування">
+        <input type="text" name="name" placeholder="Назва">
+        <input type="text" name="notes" placeholder="Нотатки">
+        <button type="button" onclick="submitForm()">добавити</button>
+    </form>
+
+    <h2>таблиця переліку</h2>
+    <form id="searchForm" onsubmit="event.preventDefault(); searchAndSort();">
+        <input type="text" name="search" placeholder="Пошук за назвою" value="{{ search if search }}">
+        <select name="sort_by">
+            <option value="">Сортувати за роком</option>
+            <option value="year_asc" {% if sort_by == "year_asc" %}selected{% endif %}>За зростанням</option>
+            <option value="year_desc" {% if sort_by == "year_desc" %}selected{% endif %}>За спаданням</option>
+        </select>
+        <button type="submit">Пошук і сортування</button>
+    </form>
+    
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Кодування</th>
+            <th>Назва</th>
+            <th>Нотатки</th>
+            <th>Дата створена</th>
+            <th>Дата оновлена</th>
+            <th>Дії</th>
+        </tr>
+        {% for perelik in pereliks %}
+            <tr>
+                <td>{{ perelik.id }}</td>
+                <td>{{ perelik.coding }}</td>
+                <td>{{ perelik.name }}</td>
+                <td>{{ perelik.notes }}</td>
+                <td>{{ perelik.date_created.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+                <td>{{ perelik.date_updated.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+                <td>
+                    <button onclick="editPerelikCoding({{ perelik.id }})">редагувати кодування</button>
+                    <button onclick="editPerelikName({{ perelik.id }})">редагувати назву</button>
+                    <button onclick="editPerelikNotes({{ perelik.id }})">Редагувати нотатки</button>
+                    <button onclick="deletePerelik({{ perelik.id }})">Видалити</button>
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    function searchAndSort() {
+        const searchForm = document.getElementById('searchForm');
+        const formData = new FormData(searchForm);
+        const searchParams = new URLSearchParams(formData);
+
+        window.location.href = `/perelik/perelik_page?${searchParams.toString()}`;
+    }
+
+    async function submitForm() {
+        const form = document.getElementById('perelikForm');
+        const formData = new FormData(form);
+        const jsonData = {};
+
+        for (const [key, value] of formData.entries()) {
+            jsonData[key] = value;
+        }
+        const response = await fetch('/perelik/perelik/', {
+            method: 'POST',
+            headers: {
+           'Content-Type': 'application/json'
+             },
+            body: JSON.stringify(jsonData)
+        });
+
+        if (response.ok) {
+            // Handle success, e.g., reload the page or display a message
+            window.location.reload();
+        } else {
+            // Handle errors
+            console.error('Error:', response.statusText);
+        }
+    }
+    
+    async function editPerelikCoding(perelikId) {
+        const newCoding = prompt("введіть нове кодування (порожньо, щоб не змінювати):");
+
+        const jsonData = {};
+
+        if (newCoding !== "") {
+            jsonData["coding"] = newCoding;
+        }
+
+        const response = await fetch(`/perelik/perelik/${perelikId}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(jsonData)
+        });
+
+        if (response.ok) {
+            window.location.reload();
+        } else {
+            console.error('Error:', response.statusText);
+        }
+    }
+
+    async function editPerelikName(perelikId) {
+        const newName = prompt("введіть нову назву (порожньо, щоб не змінювати):");
+
+        const jsonData = {};
+
+        if (newName !== "") {
+            jsonData["name"] = newName;
+        }
+
+        const response = await fetch(`/perelik/perelik/${perelikId}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(jsonData)
+        });
+
+        if (response.ok) {
+            window.location.reload();
+        } else {
+            console.error('Error:', response.statusText);
+        }
+    }
+
+    async function editPerelikNotes(perelikId) {
+        const newNotes = prompt("введіть нову нотатки (порожньо, щоб не змінювати):");
+
+        const jsonData = {};
+
+        if (newNotes !== "") {
+            jsonData["notes"] = newNotes;
+        }
+
+        const response = await fetch(`/perelik/perelik/${perelikId}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(jsonData)
+        });
+
+        if (response.ok) {
+            window.location.reload();
+        } else {
+            console.error('Error:', response.statusText);
+        }
+    }
+
+    async function deletePerelik(perelikId) {
+        if (!confirm('Ви дійсно хочете видалити цей перелік?')) {
+            return;
+        }
+
+        const response = await fetch(`/perelik/perelik/${perelikId}`, {
+             method: 'DELETE',
+        });
+
+        if (response.ok) {
+            window.location.reload();
+        } else {
+            console.error('Error:', response.statusText);
+        }
+    }
+</script>
+{% endblock %}

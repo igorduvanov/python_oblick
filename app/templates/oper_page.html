@@ -1,0 +1,147 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>операції CRUD </h1>
+
+    <form id="operForm">
+        <input type="text" name="name" placeholder="Назва">
+        <input type="text" name="cod" placeholder="код">
+        <button type="button" onclick="submitForm()">добавити</button>
+    </form>
+
+    <h2>операції</h2>
+    <form id="searchForm" onsubmit="event.preventDefault(); searchAndSort();">
+        <input type="text" name="search" placeholder="Пошук за назвою" value="{{ search if search }}">
+        <select name="sort_by">
+            <option value="">Сортувати за роком</option>
+            <option value="year_asc" {% if sort_by == "year_asc" %}selected{% endif %}>За зростанням</option>
+            <option value="year_desc" {% if sort_by == "year_desc" %}selected{% endif %}>За спаданням</option>
+        </select>
+        <button type="submit">Пошук і сортування</button>
+    </form>
+
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Назва</th>
+            <th>код</th>
+            <th>Дата створена</th>
+            <th>Дата оновлена</th>
+            <th>Дії</th>
+        </tr>
+        {% for oper in oper %}
+            <tr>
+                <td>{{ oper.id }}</td>
+                <td>{{ oper.name }}</td>
+                <td>{{ oper.cod }}</td>
+                <td>{{ oper.date_created.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+                <td>{{ oper.date_updated.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+                <td>
+                    <button onclick="editOperName({{ oper.id }})">редагувати назву</button>
+                    <button onclick="editOperCod({{ oper.id }})">Редагувати код</button>
+                    <button onclick="deleteOper({{ oper.id }})">Видалити</button>
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}
+
+{% block scripts %}
+<script>
+     function searchAndSort() {
+        const searchForm = document.getElementById('searchForm');
+        const formData = new FormData(searchForm);
+        const searchParams = new URLSearchParams(formData);
+
+        window.location.href = `/oper/oper_page?${searchParams.toString()}`;
+    }
+    async function submitForm() {
+        const form = document.getElementById('operForm');
+        const formData = new FormData(form);
+        const jsonData = {};
+
+        for (const [key, value] of formData.entries()) {
+            jsonData[key] = value;
+        }
+        const response = await fetch('/oper/oper/', {
+            method: 'POST',
+            headers: {
+           'Content-Type': 'application/json'
+             },
+            body: JSON.stringify(jsonData)
+        });
+
+        if (response.ok) {
+            // Handle success, e.g., reload the page or display a message
+            window.location.reload();
+        } else {
+            // Handle errors
+            console.error('Error:', response.statusText);
+        }
+    }
+    async function editOperName(operId) {
+        const newName = prompt("введіть нову назву (порожньо, щоб не змінювати):");
+
+        const jsonData = {};
+
+        if (newName !== "") {
+            jsonData["name"] = newName;
+        }
+
+        const response = await fetch(`/oper/oper/${operId}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(jsonData)
+        });
+
+        if (response.ok) {
+            window.location.reload();
+        } else {
+            console.error('Error:', response.statusText);
+        }
+    }
+
+    async function editOperCod(operId) {
+        const newCods = prompt("введіть нову нотатки (порожньо, щоб не змінювати):");
+
+        const jsonData = {};
+
+        if (newCods !== "") {
+            jsonData["cod"] = newCods;
+        }
+
+        const response = await fetch(`/oper/oper/${operId}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(jsonData)
+        });
+
+        if (response.ok) {
+            window.location.reload();
+        } else {
+            console.error('Error:', response.statusText);
+        }
+    }
+
+
+    async function deleteOper(operId) {
+        if (!confirm('Ви дійсно хочете видалити цю операцію?')) {
+            return;
+        }
+
+        const response = await fetch(`/oper/oper/${operId}`, {
+             method: 'DELETE',
+        });
+
+        if (response.ok) {
+            window.location.reload();
+        } else {
+            console.error('Error:', response.statusText);
+        }
+    }
+</script>
+{% endblock %}

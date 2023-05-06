@@ -6,7 +6,7 @@
     <form id="materialForm">
         <input type="text" name="profile" placeholder="Профіл">
         <input type="text" name="marka" placeholder="Матеріальний знак">
-        <input type="number" name="weight" placeholder="Вага p/m" step="0.01">
+        <input type="number" name="weight" placeholder="Вага p/m обовязково" step="0.01">
         <input type="text" name="notes" placeholder="Нотатки">
         <button type="button" onclick="submitForm()">Додавання</button>
     </form>
@@ -19,6 +19,7 @@
             <option value="weight_asc" {% if sort_by == "weight_asc" %}selected{% endif %}>за зростанням</option>
             <option value="weight_desc" {% if sort_by == "weight_desc" %}selected{% endif %}>за спаданням</option>
         </select>
+        <input type="number" name="year" placeholder="Рік" value="{{ year if year }}" min="1900" max="2099" step="1">
         <button type="submit">Пошук і сортування</button>
     </form>
     

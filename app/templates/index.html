@@ -11,12 +11,16 @@
     {% extends "base.html" %}
 
     {% block content %}
-        <h1>Головна сторінка</h1>
-        <a href="/odvumir/odvumir_page">одиниці виміру</a>
-        <a href="/oper/oper_page">операції</a>
-        <a href="/robitnuk/robitnuk_page">робітники</a>
-        <a href="/perelik/perelik_page">перелік</a>
-        <a href="/material/material_page">матеріали</a>
+    <div class="index__menu__block">
+         <h1>Головна сторінка</h1>
+        <div class="index__menu__nav">
+            <a href="/odvumir/odvumir_page">одиниці виміру</a>
+            <a href="/oper/oper_page">операції</a>
+            <a href="/robitnuk/robitnuk_page">робітники</a>
+            <a href="/perelik/perelik_page">перелік</a>
+            <a href="/material/material_page">матеріали</a>
+        </div>
+    </div>
         {% endblock %}
     
 </body>

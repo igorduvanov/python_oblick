@@ -2,6 +2,7 @@ from fastapi.responses import HTMLResponse
 from app.routers import odvumir, oper, robitnuk, perelik, material, price, nakladna, operation, resur, marshryt, denzvit
 from fastapi.templating import Jinja2Templates
 from fastapi import FastAPI, Request
+from fastapi.staticfiles import StaticFiles
 
 from app.templates import templates
 
@@ -13,7 +14,7 @@ templates = Jinja2Templates(directory="app/templates")
 async def read_root(request: Request):
     return templates.TemplateResponse("index.html", {"request": request})
 
-
+app.mount("/static", StaticFiles(directory="app/static"), name="static")
 
 app.include_router(odvumir.router, prefix="/odvumir", tags=["odvumir"])
 app.include_router(oper.router, prefix="/oper", tags=["oper"])

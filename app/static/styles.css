@@ -1,0 +1,31 @@
+/*стилі на index.html*/
+.index__menu__nav {
+    gap: 20px;
+    display: flex;
+   
+}
+.index__menu__nav a{
+    text-decoration: none;
+    color: black;
+    border: 1px solid black;
+    padding: 10px;
+}
+/*стилі для таблиць*/
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+table, th, td {
+    border: 1px solid black;
+}
+
+th, td {
+    padding: 10px;
+    text-align: left;
+}
+
+th {
+    background-color: #f2f2f2;
+}
+/**/

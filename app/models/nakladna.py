@@ -9,13 +9,14 @@ class Nakladna(Base):
     __tablename__ = 'nakladnas'
     id = Column(Integer, primary_key=True, index=True)                      #
     number = Column(VARCHAR(13))                                            # Номер накладної
-    adresa1 = Column(Integer)                                               # Відправник
-    adresa2 = Column(Integer)                                               # Одержувач
+    adresa1 = Column(String)                                               # Відправник
+    adresa2 = Column(String)                                               # Одержувач
     id_perelik = Column(Integer, ForeignKey("pereliks.id"))                  # 
     kilkist = Column(Float)                                                 # Кількість
     id_odvumir = Column(Integer, ForeignKey("odvumirs.id"))                 # 
     notes = Column(String)
-    date_created = Column(DateTime(), default=datetime.utcnow)
-    date_updated = Column(DateTime(), default=datetime.utcnow)
     Perelik = relationship("Perelik")
     Odvumir = relationship("Odvumir")
+    date_created = Column(DateTime(), default=datetime.utcnow)
+    date_updated = Column(DateTime(), default=datetime.today)
+    

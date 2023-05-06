@@ -42,6 +42,7 @@ python_oblick/
 │   │   ├── odvumir_page.html
 │   │   ├── oper_page.html
 │   │   ├── robitnuk_page.html
+│   │   ├── material_page.html
 │   ├── config.py
 │   ├── DB.db
 │   ├── templates.py

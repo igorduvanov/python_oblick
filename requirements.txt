@@ -43,6 +43,7 @@ python_oblick/
 │   │   ├── oper_page.html
 │   │   ├── robitnuk_page.html
 │   │   ├── material_page.html
+│   │   ├── price_page.html
 │   ├── static/
 │   │   ├── style.css
 │   ├── config.py

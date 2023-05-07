@@ -1,8 +1,7 @@
-import datetime
-from click import DateTime
-from sqlalchemy import Column, Float, ForeignKey, Integer, String
+from sqlalchemy import Column, Float, ForeignKey, Integer, String, DateTime
 from app.models.base import Base
 from sqlalchemy.orm import relationship
+from datetime import datetime
 
 
 class Price(Base):

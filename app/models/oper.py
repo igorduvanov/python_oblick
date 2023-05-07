@@ -8,4 +8,4 @@ class Oper(Base):
     name = Column(String)                                                   # операції по стандарту
     cod = Column(String)                                                    #
     date_created = Column(DateTime(), default=datetime.utcnow)
-    date_updated = Column(DateTime(), default=datetime.today)
+    date_updated = Column(DateTime(), default=datetime.utcnow)

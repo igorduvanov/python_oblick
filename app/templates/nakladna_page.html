@@ -1,0 +1,247 @@
+{% extends "base.html" %}
+
+{% block content %}
+<a href="/">Назад до головної сторінки</a>
+<h1>Таблиця накладних</h1>
+<form id="nakladnaForm">
+    <input type="text" name="number" placeholder="Номер">
+    <input type="text" name="adresa1" placeholder="Адреса 1">
+    <input type="text" name="adresa2" placeholder="Адреса 2">
+    <select name="id_perelik">
+        <option value="">Виберіть перелік</option>
+        {% for perelik in pereliks %}
+            <option value="{{ perelik.id }}">{{ perelik.name }}</option>
+        {% endfor %}
+    </select>
+    <input type="text" name="kilkist" placeholder="Кількість">
+    <select name="id_odvumir">
+        <option value="">Виберіть одиницю виміру</option>
+        {% for odvumir in odvumirs %}
+            <option value="{{ odvumir.id }}">{{ odvumir.name }}</option>
+        {% endfor %}
+    </select>
+    <input type="text" name="notes" placeholder="Примітки">
+    <button type="button" onclick="submitForm()">додати</button>
+</form>
+
+<h2>Таблиця накладних</h2>
+<form id="searchForm" onsubmit="event.preventDefault(); searchAndSort();">
+    <input type="text" name="search" placeholder="Пошук за номером" value="{{ search if search }}">
+    <select name="sort_by">
+        <option value="">Сортуйте за роком</option>
+        <option value="year_asc" {% if sort_by == "year_asc" %}selected{% endif %}>За зростанням</option>
+        <option value="year_desc" {% if sort_by == "year_desc" %}selected{% endif %}>За спаданням</option>
+    </select>
+    <button type="submit">Пошук і сортування</button>
+</form>
+
+<table>
+    <tr>
+        <th>ID</th>
+        <th>Номер</th>
+        <th>Адреса 1</th>
+        <th>Адреса 2</th>
+        <th>Перелік</th>
+        <th>Кількість</th>
+        <th>Одиниця виміру</th>
+        <th>Примітки</th>
+        <th>Дата створена</th>
+        <th>Дата оновлена</th>
+        <th>Дії</th>
+    </tr>
+    {% for nakladna in nakladnas %}
+        <tr>
+            <td>{{ nakladna.id }}</td>
+            <td>{{ nakladna.number }}</td>
+            <td>{{ nakladna.adresa1 }}</td>
+            <td>{{ nakladna.adresa2 }}</td>
+            <td>{{ nakladna.Perelik.name }}</td>
+            <td>{{ nakladna.kilkist }}</td>
+            <td>{{ nakladna.Odvumir.name }}</td>
+            <td>{{ nakladna.notes }}</td>
+            <td>{{ nakladna.date_created.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+            <td>{{ nakladna.date_updated.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+            <td>
+                <button onclick="editNakladnaNumber({{ nakladna.id }})">Редагувати номер</button>
+                <button onclick="editNakladnaAdresa1({{ nakladna.id }})">Редагувати адресу 1</button>
+                <button onclick="editNakladnaAdresa2({{ nakladna.id }})">Редагувати адресу 2</button>
+                <button onclick="editNakladnaKilkist({{ nakladna.id }})">Редагувати кількість</button>
+                <button onclick="editNakladnaNotes({{ nakladna.id }})">Редагувати нотатки</button>
+                <button onclick="deleteNakladna({{ nakladna.id }})">Видалити</button>
+            </td>
+            </tr>
+        {% endfor %}
+            
+        </table>
+        {% endblock %}
+{% block scripts %}
+<script>
+      function searchAndSort() {
+        const searchForm = document.getElementById('searchForm');
+        const formData = new FormData(searchForm);
+        const searchParams = new URLSearchParams(formData);
+
+        window.location.href = `/nakladna/nakladna_page?${searchParams.toString()}`;
+    }         
+
+    async function submitForm() {
+        const form = document.getElementById('nakladnaForm');
+        const formData = new FormData(form);
+        const jsonData = {};
+
+        for (const [key, value] of formData.entries()) {
+            jsonData[key] = value;
+        }
+        const response = await fetch('/nakladna/nakladna/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(jsonData)
+        });
+
+        if (response.ok) {
+            window.location.reload();
+        } else {
+            // Handle errors
+            console.error('Error:', response.statusText);
+        }
+    }
+     
+    async function editNakladnaNumber(nakladnaId) {
+        const newNumber = prompt("введіть новий номер (порожньо, щоб не змінювати):");
+
+        const jsonData = {};
+
+        if (newNumber !== "") {
+            jsonData["number"] = newNumber;
+        }
+
+        const response = await fetch(`/nakladna/nakladna/${nakladnaId}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(jsonData)
+        });
+
+        if (response.ok) {
+            window.location.reload();
+        } else {
+            console.error('Error:', response.statusText);
+        }
+    }
+
+    async function editNakladnaAdresa1(nakladnaId) {
+        const newAdresa1 = prompt("введіть новий адрес 1 (порожньо, щоб не змінювати):");
+
+        const jsonData = {};
+
+        if (newAdresa1 !== "") {
+            jsonData["adresa1"] = newAdresa1;
+        }
+
+        const response = await fetch(`/nakladna/nakladna/${nakladnaId}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(jsonData)
+        });
+
+        if (response.ok) {
+            window.location.reload();
+        } else {
+            console.error('Error:', response.statusText);
+        }
+    }
+
+    async function editNakladnaAdresa2(nakladnaId) {
+        const newAdresa2 = prompt("введіть новий адрес 2 (порожньо, щоб не змінювати):");
+
+        const jsonData = {};
+
+        if (newAdresa2 !== "") {
+            jsonData["adresa2"] = newAdresa2;
+        }
+
+        const response = await fetch(`/nakladna/nakladna/${nakladnaId}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(jsonData)
+        });
+
+        if (response.ok) {
+            window.location.reload();
+        } else {
+            console.error('Error:', response.statusText);
+        }
+    }
+
+    async function editNakladnaKilkist(nakladnaId) {
+        const newKilkist = prompt("введіть новий кількість (порожньо, щоб не змінювати):");
+
+        const jsonData = {};
+
+        if (newKilkist !== "") {
+            jsonData["kilkist"] = newKilkist;
+        }
+
+        const response = await fetch(`/nakladna/nakladna/${nakladnaId}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(jsonData)
+        });
+
+        if (response.ok) {
+            window.location.reload();
+        } else {
+            console.error('Error:', response.statusText);
+        }
+    }
+
+    async function editNakladnaNotes(nakladnaId) {
+        const newNotes = prompt("введіть нову назву (порожньо, щоб не змінювати):");
+
+        const jsonData = {};
+
+        if (newNotes !== "") {
+            jsonData["notes"] = newNotes;
+        }
+
+        const response = await fetch(`/nakladna/nakladna/${nakladnaId}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(jsonData)
+        });
+
+        if (response.ok) {
+            window.location.reload();
+        } else {
+            console.error('Error:', response.statusText);
+        }
+    }
+     
+    async function deleteNakladna(nakladnaId) {
+        if (!confirm('Ви впевнені, що хочете видалити цю накладну?')) {
+            return;
+        }
+
+        const response = await fetch(`/nakladna/nakladna/${nakladnaId}`, {
+            method: 'DELETE',
+        });
+
+        if (response.ok) {
+            window.location.reload();
+        } else {
+            console.error('Error:', response.statusText);
+        }
+    }
+</script>
+{% endblock %}

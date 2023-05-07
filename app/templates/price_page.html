@@ -23,7 +23,7 @@
 
     <h2>Таблиця цін</h2>
     <form id="searchForm" onsubmit="event.preventDefault(); searchAndSort();">
-        <input type="text" name="search" placeholder="Пошук за примітками" value="{{ search if search }}">
+        <input type="text" name="search" placeholder="Пошук за матеріалом" value="{{ search if search }}">
         <select name="sort_by">
             <option value="">Сортуйте за роком</option>
             <option value="year_asc" {% if sort_by == "year_asc" %}selected{% endif %}>За зростанням</option>
@@ -50,8 +50,8 @@
                 <td>{{ price.price }}</td>
                 <td>{{ price.Odvumir.name }}</td>
                 <td>{{ price.notes }}</td>
-                <td>{{ price.date_created }}</td>
-                <td>{{ price.date_updated }}</td>
+                <td>{{ price.date_created.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+                <td>{{ price.date_updated.strftime('%Y-%m-%d %H:%M:%S') }}</td>
                 <td>
                     <button onclick="editPricePrice({{ price.id }})">Редагувати ціну</button>
                     <button onclick="editPriceNotes({{ price.id }})">Редагувати нотатки</button>
@@ -146,7 +146,7 @@
     }
 
     async function deletePrice(priceId) {
-        if (!confirm('Are you sure you want to delete this price?')) {
+        if (!confirm('Ви впевнені, що хочете видалити цю ціну?')) {
             return;
         }
 

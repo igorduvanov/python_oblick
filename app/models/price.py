@@ -14,4 +14,4 @@ class Price(Base):
     Material = relationship("Material")
     Odvumir = relationship("Odvumir")
     date_created = Column(DateTime(), default=datetime.utcnow)
-    date_updated = Column(DateTime(), default=datetime.today)
+    date_updated = Column(DateTime(), default=datetime.utcnow)

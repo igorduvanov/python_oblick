@@ -1,5 +1,6 @@
 from app.models.material import Material
 from app.models.odvumir import Odvumir
+from app.models.price import Price
 from datetime import datetime
 from typing import Optional
 from fastapi import APIRouter, Depends, HTTPException, Request
@@ -7,7 +8,6 @@ from pydantic import BaseModel
 from sqlalchemy.orm import Session
 from fastapi.responses import HTMLResponse
 from app.database import get_db
-from app.models.price import Price
 from app.templates import templates
 
 
@@ -69,7 +69,7 @@ async def read_price_page(request: Request, db: Session = Depends(get_db), searc
     odvumirs = db.query(Odvumir).all()  
 
     if search:
-        prices = prices.filter(Price.notes.contains(search))
+         prices = prices.join(Material).filter(Material.profile.contains(search))
 
     if sort_by:
         if sort_by == "year_asc":

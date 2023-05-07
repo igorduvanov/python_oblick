@@ -63,7 +63,10 @@ async def create_price(price: PriceCreate, db: Session = Depends(get_db)):
 @router.get("/price_page", response_class=HTMLResponse)
 async def read_price_page(request: Request, db: Session = Depends(get_db), search: Optional[str] = None,
                             sort_by: Optional[str] = None):
-    prices = db.query(Price)    
+    prices = db.query(Price)  
+
+    materials = db.query(Material).all()
+    odvumirs = db.query(Odvumir).all()  
 
     if search:
         prices = prices.filter(Price.notes.contains(search))
@@ -77,7 +80,8 @@ async def read_price_page(request: Request, db: Session = Depends(get_db), searc
     prices = prices.all()
 
     return templates.TemplateResponse("price_page.html",
-                                      {"request": request, "prices": prices, "search": search, "sort_by": sort_by})
+                                      {"request": request, "prices": prices, "search": search, "sort_by": sort_by,
+                                       "materials": materials, "odvumirs": odvumirs})
 
 @router.put("/price/{price_id}")
 async def update_price(price_id: int, price: PriceUpdate, db: Session = Depends(get_db)):

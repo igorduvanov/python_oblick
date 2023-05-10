@@ -1,8 +1,8 @@
-import datetime
-from click import DateTime
-from sqlalchemy import Column, ForeignKey, Integer
+from sqlalchemy import Column, ForeignKey, Integer, DateTime
 from app.models.base import Base
 from sqlalchemy.orm import relationship
+from datetime import datetime
+
 
 class Marshryt(Base):
     __tablename__ = 'marshryts'

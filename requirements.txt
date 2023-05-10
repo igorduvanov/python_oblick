@@ -1,5 +1,6 @@
 fastapi[all]
 sqlalchemy
+alembic
 Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope Process
 uvicorn app.main:app --reload
 .\venv\Scripts\Activate

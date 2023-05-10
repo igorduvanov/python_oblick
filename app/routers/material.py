@@ -12,19 +12,19 @@ from sqlalchemy import extract
 router = APIRouter()
 
 class MaterialBase(BaseModel):
-    profile: str
-    marka: str
     weight: float
     notes: Optional[str] = None
+    id_perelik: Optional[int] = None
+    id_odvumir: Optional[int] = None
 
 class MaterialCreate(MaterialBase):
     pass
 
 class MaterialUpdate(MaterialBase):
-    profile: Optional[str] = None
-    marka: Optional[str] = None
     weight: Optional[float] = None
     notes: Optional[str] = None
+    id_perelik: Optional[int] = None
+    id_odvumir: Optional[int] = None
 
 class MaterialInDB(MaterialBase):
     id: int
@@ -36,15 +36,14 @@ class MaterialInDB(MaterialBase):
 
 class MaterialOut(BaseModel):
     id: int
-    profile: str
-    marka: str
     weight: float
     notes: str
     date_created: datetime
     date_updated: datetime
 
 def create_material_in_db(material: MaterialCreate, db: Session):
-    new_material = Material(profile=material.profile, marka=material.marka, weight=material.weight, notes=material.notes)
+    new_material = Material(weight=material.weight, notes=material.notes,
+                            id_perelik=material.id_perelik, id_odvumir=material.id_odvumir)
     db.add(new_material)
     db.commit()
     db.refresh(new_material)
@@ -83,14 +82,14 @@ async def update_material(material_id: int, material: MaterialUpdate, db: Sessio
     if not db_material:
         raise HTTPException(status_code=404, detail="Material not found")
 
-    if material.profile is not None:
-        db_material.profile = material.profile
-    if material.marka is not None:
-        db_material.marka = material.marka
     if material.weight is not None:
         db_material.weight = material.weight
     if material.notes is not None:
         db_material.notes = material.notes
+    if material.id_perelik is not None:
+        db_material.id_perelik = material.id_perelik
+    if material.id_odvumir is not None:
+        db_material.id_odvumir = material.id_odvumir
 
     db.commit()
     db.refresh(db_material)

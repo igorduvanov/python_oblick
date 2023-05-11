@@ -7,9 +7,9 @@
     <select name="id_material">
         <option value="">Виберіть Матеріал</option>
         {% for material in materials %}
-            <option value="{{ material.id }}">{{ material.profile }} - {{ material.marka }}</option>
+            <option value="{{ material.id }}">{{ material.Perelik.coding }} - {{ material.weight }}</option>
         {% endfor %}
-    </select>
+    </select>    
     <select name="id_odvumir">
         <option value="">Виберіть одиницю виміру</option>
         {% for odvumir in odvumirs %}
@@ -23,7 +23,7 @@
 
     <h2>Таблиця цін</h2>
     <form id="searchForm" onsubmit="event.preventDefault(); searchAndSort();">
-        <input type="text" name="search" placeholder="Пошук за матеріалом" value="{{ search if search }}">
+        <input type="text" name="search" placeholder="Пошук за кодом матеріалу" value="{{ search if search }}">
         <select name="sort_by">
             <option value="">Сортуйте за роком</option>
             <option value="year_asc" {% if sort_by == "year_asc" %}selected{% endif %}>За зростанням</option>
@@ -46,7 +46,7 @@
         {% for price in prices %}
             <tr>
                 <td>{{ price.id }}</td>
-                <td>{{ price.Material.profile }}</td>
+                <td>{{ price.Material.Perelik.coding if price.Material and price.Material.Perelik else 'N/A' }}</td>
                 <td>{{ price.price }}</td>
                 <td>{{ price.Odvumir.name }}</td>
                 <td>{{ price.notes }}</td>

@@ -1,4 +1,5 @@
 from app.models.odvumir import Odvumir
+from app.models.unit import Unit
 from app.models.perelik import Perelik
 from app.models.nakladna import Nakladna
 from datetime import datetime
@@ -15,8 +16,7 @@ router = APIRouter()
 # Move the contents of schemas.py here
 class NakladnaBase(BaseModel):
     number: str
-    adresa1: str
-    adresa2: str
+    id_unit: int
     id_perelik: int
     kilkist: float
     id_odvumir: int
@@ -27,8 +27,7 @@ class NakladnaCreate(NakladnaBase):
 
 class NakladnaUpdate(NakladnaBase):
     number: Optional[str] = None
-    adresa1: Optional[str] = None
-    adresa2: Optional[str] = None
+    id_unit: Optional[int] = None
     id_perelik: Optional[int] = None
     kilkist: Optional[float] = None
     id_odvumir: Optional[int] = None
@@ -48,9 +47,8 @@ class NakladnaOut(NakladnaInDB):
     pass
 
 def create_nakladna_in_db(nakladna: NakladnaCreate, db: Session):
-    new_nakladna = Nakladna(number=nakladna.number, adresa1=nakladna.adresa1, adresa2=nakladna.adresa2, 
-                            id_perelik=nakladna.id_perelik, kilkist=nakladna.kilkist, 
-                            id_odvumir=nakladna.id_odvumir, notes=nakladna.notes)
+    new_nakladna = Nakladna(number=nakladna.number, id_unit=nakladna.id_unit, id_perelik=nakladna.id_perelik, 
+                            kilkist=nakladna.kilkist, id_odvumir=nakladna.id_odvumir, notes=nakladna.notes)
     db.add(new_nakladna)
     db.commit()
     db.refresh(new_nakladna)
@@ -66,6 +64,7 @@ async def read_nakladna_page(request: Request, db: Session = Depends(get_db), se
                               sort_by: Optional[str] = None):
     nakladnas = db.query(Nakladna)
 
+    units = db.query(Unit).all()
     pereliks = db.query(Perelik).all()
     odvumirs = db.query(Odvumir).all()
 
@@ -82,20 +81,17 @@ async def read_nakladna_page(request: Request, db: Session = Depends(get_db), se
 
     return templates.TemplateResponse("nakladna_page.html",
      {"request":request, "nakladnas": nakladnas, "search": search, "sort_by": sort_by,
-                                       "pereliks": pereliks, "odvumirs": odvumirs})
+                                       "units": units, "pereliks": pereliks,"odvumirs": odvumirs})
 
 @router.put("/nakladna/{nakladna_id}")
 async def update_nakladna(nakladna_id: int, nakladna: NakladnaUpdate, db: Session = Depends(get_db)):
     db_nakladna = db.query(Nakladna).filter(Nakladna.id == nakladna_id).first()
     if not db_nakladna:
         raise HTTPException(status_code=404, detail="Nakladna not found")
-
     if nakladna.number is not None:
         db_nakladna.number = nakladna.number
-    if nakladna.adresa1 is not None:
-        db_nakladna.adresa1 = nakladna.adresa1
-    if nakladna.adresa2 is not None:
-        db_nakladna.adresa2 = nakladna.adresa2
+    if nakladna.id_unit is not None:
+        db_nakladna.id_unit = nakladna.id_unit
     if nakladna.id_perelik is not None:
         db_nakladna.id_perelik = nakladna.id_perelik
     if nakladna.kilkist is not None:
@@ -116,4 +112,5 @@ async def delete_nakladna(nakladna_id: int, db: Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail="Nakladna not found")
     db.delete(db_nakladna)
     db.commit()
-    return {"detail": "nakladna deleted"}
+    return {"detail": "nakladna deleted"}    
+

@@ -5,11 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="019b164c-fc17-44ba-8994-bf02091f718e" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/python_oblick.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/python_oblick.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/alembic/versions/7a62a9d8171e_update_table_structures.py" beforeDir="false" afterPath="$PROJECT_DIR$/alembic/versions/7a62a9d8171e_update_table_structures.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/DB.db" beforeDir="false" afterPath="$PROJECT_DIR$/app/DB.db" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/models/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/models/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/routers/material.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/routers/material.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/templates/material_page.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/material_page.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/templates/price_page.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/price_page.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

@@ -5,12 +5,16 @@
 <h1>Таблиця накладних</h1>
 <form id="nakladnaForm">
     <input type="text" name="number" placeholder="Номер">
-    <input type="text" name="adresa1" placeholder="Адреса 1">
-    <input type="text" name="adresa2" placeholder="Адреса 2">
+    <select name="id_unit">
+        <option value="">Виберіть адресу</option>
+        {% for unit in units %}
+            <option value="{{ unit.id }}">{{ unit.name }}</option>
+        {% endfor %}
+    </select>
     <select name="id_perelik">
         <option value="">Виберіть перелік</option>
         {% for perelik in pereliks %}
-            <option value="{{ perelik.id }}">{{ perelik.name }}</option>
+            <option value="{{ perelik.id }}">{{ perelik.coding }}</option>
         {% endfor %}
     </select>
     <input type="text" name="kilkist" placeholder="Кількість">
@@ -39,8 +43,7 @@
     <tr>
         <th>ID</th>
         <th>Номер</th>
-        <th>Адреса 1</th>
-        <th>Адреса 2</th>
+        <th>Адреса</th>
         <th>Перелік</th>
         <th>Кількість</th>
         <th>Одиниця виміру</th>
@@ -53,8 +56,7 @@
         <tr>
             <td>{{ nakladna.id }}</td>
             <td>{{ nakladna.number }}</td>
-            <td>{{ nakladna.adresa1 }}</td>
-            <td>{{ nakladna.adresa2 }}</td>
+            <td>{{ nakladna.Unit.name }}</td>
             <td>{{ nakladna.Perelik.name }}</td>
             <td>{{ nakladna.kilkist }}</td>
             <td>{{ nakladna.Odvumir.name }}</td>
@@ -63,8 +65,6 @@
             <td>{{ nakladna.date_updated.strftime('%Y-%m-%d %H:%M:%S') }}</td>
             <td>
                 <button onclick="editNakladnaNumber({{ nakladna.id }})">Редагувати номер</button>
-                <button onclick="editNakladnaAdresa1({{ nakladna.id }})">Редагувати адресу 1</button>
-                <button onclick="editNakladnaAdresa2({{ nakladna.id }})">Редагувати адресу 2</button>
                 <button onclick="editNakladnaKilkist({{ nakladna.id }})">Редагувати кількість</button>
                 <button onclick="editNakladnaNotes({{ nakladna.id }})">Редагувати нотатки</button>
                 <button onclick="deleteNakladna({{ nakladna.id }})">Видалити</button>
@@ -132,53 +132,7 @@
         }
     }
 
-    async function editNakladnaAdresa1(nakladnaId) {
-        const newAdresa1 = prompt("введіть новий адрес 1 (порожньо, щоб не змінювати):");
-
-        const jsonData = {};
-
-        if (newAdresa1 !== "") {
-            jsonData["adresa1"] = newAdresa1;
-        }
-
-        const response = await fetch(`/nakladna/nakladna/${nakladnaId}`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(jsonData)
-        });
-
-        if (response.ok) {
-            window.location.reload();
-        } else {
-            console.error('Error:', response.statusText);
-        }
-    }
-
-    async function editNakladnaAdresa2(nakladnaId) {
-        const newAdresa2 = prompt("введіть новий адрес 2 (порожньо, щоб не змінювати):");
-
-        const jsonData = {};
-
-        if (newAdresa2 !== "") {
-            jsonData["adresa2"] = newAdresa2;
-        }
-
-        const response = await fetch(`/nakladna/nakladna/${nakladnaId}`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(jsonData)
-        });
-
-        if (response.ok) {
-            window.location.reload();
-        } else {
-            console.error('Error:', response.statusText);
-        }
-    }
+    
 
     async function editNakladnaKilkist(nakladnaId) {
         const newKilkist = prompt("введіть новий кількість (порожньо, щоб не змінювати):");

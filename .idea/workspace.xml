@@ -5,9 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="019b164c-fc17-44ba-8994-bf02091f718e" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/python_oblick.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/python_oblick.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/alembic/versions/7a62a9d8171e_update_table_structures.py" beforeDir="false" afterPath="$PROJECT_DIR$/alembic/versions/7a62a9d8171e_update_table_structures.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/DB.db" beforeDir="false" afterPath="$PROJECT_DIR$/app/DB.db" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/models/material.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/models/material.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/routers/material.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/routers/material.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/models/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/models/__init__.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -27,15 +29,15 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "dev__i",
-    "last_opened_file_path": "C:/xampp/htdocs/program_3",
-    "settings.editor.selected.configurable": "configurable.group.editor"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;dev__i&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/xampp/htdocs/program_3&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;configurable.group.editor&quot;
   }
-}]]></component>
+}</component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">

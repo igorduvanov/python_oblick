@@ -10,13 +10,14 @@ from sqlalchemy.orm import Session
 from fastapi.responses import HTMLResponse
 from app.database import get_db
 from app.templates import templates
+from fastapi import Form
 
 router = APIRouter()
 
-# Move the contents of schemas.py here
 class NakladnaBase(BaseModel):
     number: str
-    id_unit: int
+    address_1: int  # Changed id_unit to address_1
+    address_2: int  # Added address_2
     id_perelik: int
     kilkist: float
     id_odvumir: int
@@ -27,7 +28,8 @@ class NakladnaCreate(NakladnaBase):
 
 class NakladnaUpdate(NakladnaBase):
     number: Optional[str] = None
-    id_unit: Optional[int] = None
+    address_1: Optional[int] = None  # Changed id_unit to address_1
+    address_2: Optional[int] = None  # Added address_2
     id_perelik: Optional[int] = None
     kilkist: Optional[float] = None
     id_odvumir: Optional[int] = None
@@ -41,14 +43,13 @@ class NakladnaInDB(NakladnaBase):
     class Config:
         orm_mode = True
 
-# End of schemas.py contents
-
 class NakladnaOut(NakladnaInDB):
     pass
 
 def create_nakladna_in_db(nakladna: NakladnaCreate, db: Session):
-    new_nakladna = Nakladna(number=nakladna.number, id_unit=nakladna.id_unit, id_perelik=nakladna.id_perelik, 
-                            kilkist=nakladna.kilkist, id_odvumir=nakladna.id_odvumir, notes=nakladna.notes)
+    new_nakladna = Nakladna(number=nakladna.number, address_1=nakladna.address_1, address_2=nakladna.address_2,
+                            id_perelik=nakladna.id_perelik, kilkist=nakladna.kilkist, 
+                            id_odvumir=nakladna.id_odvumir, notes=nakladna.notes)
     db.add(new_nakladna)
     db.commit()
     db.refresh(new_nakladna)
@@ -90,8 +91,10 @@ async def update_nakladna(nakladna_id: int, nakladna: NakladnaUpdate, db: Sessio
         raise HTTPException(status_code=404, detail="Nakladna not found")
     if nakladna.number is not None:
         db_nakladna.number = nakladna.number
-    if nakladna.id_unit is not None:
-        db_nakladna.id_unit = nakladna.id_unit
+    if nakladna.address_1 is not None:
+        db_nakladna.address_1 = nakladna.address_1
+    if nakladna.address_2 is not None:
+        db_nakladna.address_2 = nakladna.address_2
     if nakladna.id_perelik is not None:
         db_nakladna.id_perelik = nakladna.id_perelik
     if nakladna.kilkist is not None:
@@ -113,4 +116,3 @@ async def delete_nakladna(nakladna_id: int, db: Session = Depends(get_db)):
     db.delete(db_nakladna)
     db.commit()
     return {"detail": "nakladna deleted"}    
-

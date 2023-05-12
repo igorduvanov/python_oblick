@@ -1,39 +1,50 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Create Nakladna</title>
-    <!-- Add your CSS files here -->
-</head>
-<body>
+{% extends "base.html" %}
+
+{% block content %}
+    <a href="/">Назад до головної сторінки</a>
     <h1>Create Nakladna</h1>
 
     <form id="nakladnaForm">
         <label for="number">Number:</label><br>
         <input type="text" id="number" name="number"><br>
         
-        <label for="address_1">Address 1:</label><br>
-        <input type="text" id="address_1" name="address_1"><br>
+        <select name="address_1">
+            <option value="">Виберіть адресу</option>
+            {% for unit in units %}
+                <option value="{{ unit.id }}">{{ unit.name }}</option>
+            {% endfor %}
+        </select>
+        <select name="address_2">
+            <option value="">Виберіть адресу</option>
+            {% for unit in units %}
+                <option value="{{ unit.id }}">{{ unit.name }}</option>
+            {% endfor %}
+        </select>
+       
+        <select name="id_perelik">
+            <option value="">Виберіть перелік</option>
+            {% for perelik in pereliks %}
+                <option value="{{ perelik.id }}">{{ perelik.coding }}</option>
+            {% endfor %}
+        </select>
         
-        <label for="address_2">Address 2:</label><br>
-        <input type="text" id="address_2" name="address_2"><br>
-        
-        <label for="id_perelik">Perelik ID:</label><br>
-        <input type="text" id="id_perelik" name="id_perelik"><br>
         
         <label for="kilkist">Kilkist:</label><br>
         <input type="text" id="kilkist" name="kilkist"><br>
-        
-        <label for="id_odvumir">Odvumir ID:</label><br>
-        <input type="text" id="id_odvumir" name="id_odvumir"><br>
+        <select name="id_odvumir">
+            <option value="">Виберіть одиниці</option>
+            {% for odvumir in odvumirs %}
+                <option value="{{ odvumir.id }}">{{ odvumir.name }}</option>
+            {% endfor %}
+        </select>
+      
         
         <label for="notes">Notes:</label><br>
         <input type="text" id="notes" name="notes"><br>
         
         <button type="button" onclick="submitForm()">додати</button>
     </form>
-</body>
-</html>
+    {% endblock %}
 {% block scripts %}
 <script>
   async function submitForm() {

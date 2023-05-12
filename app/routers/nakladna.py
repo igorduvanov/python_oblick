@@ -83,8 +83,8 @@ async def read_nakladna_page(request: Request, db: Session = Depends(get_db), se
     unit_names = {unit.id: unit.name for unit in units}
 
     return templates.TemplateResponse("nakladna_page.html",
-     {"request":request, "nakladnas": nakladnas, "search": search, "sort_by": sort_by,
-                                       "units": unit_names, "pereliks": pereliks,"odvumirs": odvumirs})
+            {"request":request, "nakladnas": nakladnas, "search": search, "sort_by": sort_by,
+            "units": units, "unit_names": unit_names, "pereliks": pereliks,"odvumirs": odvumirs})
 
 @router.put("/nakladna/{nakladna_id}")
 async def update_nakladna(nakladna_id: int, nakladna: NakladnaUpdate, db: Session = Depends(get_db)):

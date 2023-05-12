@@ -5,8 +5,7 @@
     <h1>Create Nakladna</h1>
 
     <form id="nakladnaForm">
-        <label for="number">Number:</label><br>
-        <input type="text" id="number" name="number"><br>
+        <input type="text" id="number" name="number" placeholder="номер">
         
         <select name="address_1">
             <option value="">Виберіть адресу</option>
@@ -29,8 +28,7 @@
         </select>
         
         
-        <label for="kilkist">Kilkist:</label><br>
-        <input type="text" id="kilkist" name="kilkist"><br>
+        <input type="text" id="kilkist" name="kilkist" placeholder="кількість">
         <select name="id_odvumir">
             <option value="">Виберіть одиниці</option>
             {% for odvumir in odvumirs %}
@@ -39,8 +37,7 @@
         </select>
       
         
-        <label for="notes">Notes:</label><br>
-        <input type="text" id="notes" name="notes"><br>
+        <input type="text" id="notes" name="notes" placeholder="Нотатки">
         
         <button type="button" onclick="submitForm()">додати</button>
     </form>

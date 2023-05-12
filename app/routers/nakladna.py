@@ -10,7 +10,6 @@ from sqlalchemy.orm import Session
 from fastapi.responses import HTMLResponse
 from app.database import get_db
 from app.templates import templates
-from fastapi import Form
 
 router = APIRouter()
 
@@ -80,9 +79,12 @@ async def read_nakladna_page(request: Request, db: Session = Depends(get_db), se
 
     nakladnas = nakladnas.all()
 
+    # Create a dictionary mapping unit ids to unit names
+    unit_names = {unit.id: unit.name for unit in units}
+
     return templates.TemplateResponse("nakladna_page.html",
      {"request":request, "nakladnas": nakladnas, "search": search, "sort_by": sort_by,
-                                       "units": units, "pereliks": pereliks,"odvumirs": odvumirs})
+                                       "units": unit_names, "pereliks": pereliks,"odvumirs": odvumirs})
 
 @router.put("/nakladna/{nakladna_id}")
 async def update_nakladna(nakladna_id: int, nakladna: NakladnaUpdate, db: Session = Depends(get_db)):

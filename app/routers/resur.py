@@ -5,7 +5,7 @@ from pydantic import BaseModel
 from sqlalchemy.orm import Session
 from fastapi.responses import HTMLResponse
 from app.database import get_db
-from app.models import Perelik, Odvumir, Operation
+from app.models import Perelik, Odvumir, Operation, Oper
 from app.models.resur import Resur
 from app.templates import templates
 from sqlalchemy import extract
@@ -66,7 +66,7 @@ async def read_resur_page(request: Request, db: Session = Depends(get_db), searc
     resurs = db.query(Resur).join(Perelik, Resur.id_perelik == Perelik.id).join(Operation, Resur.id_operation == Operation.id)
 
     pereliks = db.query(Perelik).all()
-    operations = db.query(Operation).all()
+    operations = db.query(Operation).join(Oper).all()
     odvumirs = db.query(Odvumir).all()
 
     if search:

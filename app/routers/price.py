@@ -14,7 +14,6 @@ from app.models.perelik import Perelik
 
 router = APIRouter()
 
-# Move the contents of schemas.py here
 class PriceBase(BaseModel):
     id_material: int
     price: float

@@ -8,7 +8,7 @@
         <select name="id_operation">
             <option value="">Виберіть операцію</option>
             {% for operation in operations %}
-                <option value="{{ operation.id }}">{{ operation.name }}</option>
+                <option value="{{ operation.id }}">{{ operation.Oper.name }}</option>
             {% endfor %}
         </select>
         <input type="number" name="number" placeholder="Номер обов'язковий">
@@ -55,7 +55,7 @@
         {% for resur in resurs %}
             <tr>
                 <td>{{ resur.id }}</td>      
-                <td>{{ resur.Operation.name }}</td>        
+                <td>{{ resur.Operation.Oper.name }}</td>        
                 <td>{{ resur.number }}</td>
                 <td>{{ resur.Perelik.coding }}</td>
                 <td>{{ resur.kilkist }}</td>
@@ -63,7 +63,7 @@
                 <td>{{ resur.date_created.strftime('%Y-%m-%d %H:%M:%S') }}</td>
                 <td>{{ resur.date_updated.strftime('%Y-%m-%d %H:%M:%S') }}</td>
                 <td>
-                    <button onclick="editResurNumber({{ resur.id }})">Номер редагування</button>
+                    <button onclick="editResurNumber({{ resur.id }})">Редагувати номер</button>
                     <button onclick="deleteResur({{ resur.id }})">Видалити</button>
                 </td>
             </tr>

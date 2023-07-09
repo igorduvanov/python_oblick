@@ -23,6 +23,7 @@ python_oblick/
 │   │   ├── operation.py
 │   │   ├── resur.py
 │   │   ├── marshryt.py
+│   │   ├── users.py
 │   │   └── denzvit.py
 │   ├── routers/
 │   │   ├── __init__.py
@@ -36,6 +37,7 @@ python_oblick/
 │   │   ├── operation.py
 │   │   ├── resur.py
 │   │   ├── marshryt.py
+│   │   ├── users.py
 │   │   └── denzvit.py
 │   ├── templates/
 │   │   ├── base.html
@@ -45,6 +47,7 @@ python_oblick/
 │   │   ├── robitnuk_page.html
 │   │   ├── material_page.html
 │   │   ├── price_page.html
+│   │   ├── users_page.html
 │   ├── static/
 │   │   ├── style.css
 │   ├── config.py

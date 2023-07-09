@@ -1,5 +1,5 @@
 from fastapi.responses import HTMLResponse
-from app.routers import odvumir, oper, robitnuk, perelik, material, price, nakladna, operation, resur, marshryt, denzvit, unit
+from app.routers import odvumir, oper, robitnuk, perelik, material, price, nakladna, operation, resur, marshryt, denzvit, unit, users
 from fastapi.templating import Jinja2Templates
 from fastapi import FastAPI, Request
 from fastapi.staticfiles import StaticFiles
@@ -28,3 +28,4 @@ app.include_router(operation.router, prefix="/operation", tags=["operation"])
 app.include_router(resur.router, prefix="/resur", tags=["resur"])
 app.include_router(marshryt.router, prefix="/marshryt", tags=["marshryt"])
 app.include_router(denzvit.router, prefix="/denzvit", tags=["denzvit"])
+app.include_router(users.router, prefix="/users", tags=["users"])

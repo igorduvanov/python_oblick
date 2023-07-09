@@ -13,6 +13,7 @@ class Marshryt(Base):
     
     Perelik = relationship("Perelik")
     Operation = relationship("Operation")
-    date_created = Column(DateTime(), default=datetime.utcnow)
-    date_updated = Column(DateTime(), default=datetime.today)
+    date_created = Column(DateTime, default=datetime.today)
+    date_updated = Column(DateTime, default=datetime.today, onupdate=datetime.today)
+
    

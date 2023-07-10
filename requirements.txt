@@ -1,8 +1,10 @@
-fastapi[all]
-sqlalchemy
-alembic
-Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope Process
+pip install fastapi[all]
+pip install sqlalchemy
+pip install alembic
 uvicorn app.main:app --reload
+alembic revision --autogenerate -m "Initial migration"
+alembic upgrade head
+Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope Process
 .\venv\Scripts\Activate
 c:/xampp/htdocs/python_oblick/venv/Scripts/Activate.ps1    
 
@@ -10,6 +12,12 @@ python_oblick/
 │
 ├── app/
 │   ├── main.py
+│   ├── workshop/
+│   │   ├── workshop_routers.py
+│   │   ├── workshop_page.html
+│   ├── storage/
+│   │   ├── storage_routers.py
+│   │   ├── storage_page.html
 │   ├── models/
 │   │   ├── __init__.py
 │   │   ├── base.py
@@ -23,8 +31,8 @@ python_oblick/
 │   │   ├── operation.py
 │   │   ├── resur.py
 │   │   ├── marshryt.py
-│   │   ├── users.py
-│   │   └── denzvit.py
+│   │   ├── denzvit.py 
+│   │   └── users.py
 │   ├── routers/
 │   │   ├── __init__.py
 │   │   ├── odvumir.py
@@ -37,8 +45,9 @@ python_oblick/
 │   │   ├── operation.py
 │   │   ├── resur.py
 │   │   ├── marshryt.py
-│   │   ├── users.py
-│   │   └── denzvit.py
+│   │   ├── denzvit.py
+│   │   |─  users.py
+│   │   ├── authorization.py
 │   ├── templates/
 │   │   ├── base.html
 │   │   ├── index.html
@@ -48,6 +57,7 @@ python_oblick/
 │   │   ├── material_page.html
 │   │   ├── price_page.html
 │   │   ├── users_page.html
+│   │   ├── auth_page.html
 │   ├── static/
 │   │   ├── style.css
 │   ├── config.py

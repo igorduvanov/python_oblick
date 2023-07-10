@@ -1,9 +1,8 @@
 from fastapi.responses import HTMLResponse
-from app.routers import odvumir, oper, robitnuk, perelik, material, price, nakladna, operation, resur, marshryt, denzvit, unit, users
+from app.routers import odvumir, oper, robitnuk, perelik, material, price, nakladna, operation, resur, marshryt, denzvit, unit, users, authorization
 from fastapi.templating import Jinja2Templates
 from fastapi import FastAPI, Request
 from fastapi.staticfiles import StaticFiles
-
 from app.templates import templates
 
 app = FastAPI()
@@ -12,7 +11,7 @@ templates = Jinja2Templates(directory="app/templates")
 
 @app.get("/", response_class=HTMLResponse)
 async def read_root(request: Request):
-    return templates.TemplateResponse("index.html", {"request": request})
+    return templates.TemplateResponse("auth_page.html", {"request": request})
 
 app.mount("/static", StaticFiles(directory="app/static"), name="static")
 
@@ -29,3 +28,7 @@ app.include_router(resur.router, prefix="/resur", tags=["resur"])
 app.include_router(marshryt.router, prefix="/marshryt", tags=["marshryt"])
 app.include_router(denzvit.router, prefix="/denzvit", tags=["denzvit"])
 app.include_router(users.router, prefix="/users", tags=["users"])
+#роутер авторизації
+app.include_router(authorization.router, prefix="/login")
+
+

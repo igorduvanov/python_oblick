@@ -2,7 +2,7 @@
 
 {% block content %}
     <a href="/">Назад до головної сторінки</a>
-    <h1>Create Nakladna</h1>
+    <h1>CRUD накладнихц</h1>
 
     <form id="nakladnaForm">
         <input type="text" id="number" name="number" placeholder="номер">
@@ -18,16 +18,13 @@
             {% for unit in units %}
                 <option value="{{ unit.id }}">{{ unit.name }}</option>
             {% endfor %}
-        </select>
-       
+        </select>       
         <select name="id_perelik">
             <option value="">Виберіть перелік</option>
             {% for perelik in pereliks %}
                 <option value="{{ perelik.id }}">{{ perelik.coding }}</option>
             {% endfor %}
-        </select>
-        
-        
+        </select>   
         <input type="text" id="kilkist" name="kilkist" placeholder="кількість">
         <select name="id_odvumir">
             <option value="">Виберіть одиниці</option>

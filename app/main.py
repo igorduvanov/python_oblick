@@ -6,6 +6,7 @@ from fastapi.staticfiles import StaticFiles
 from app.templates import templates
 from app.workshop.workshop_routers import router as workshop_router
 from app.storage.storage_routers import router as storage_router
+from app.routers.index_router import router as index_router
 
 app = FastAPI()
 
@@ -35,6 +36,7 @@ app.include_router(denzvit.router, prefix="/denzvit", tags=["denzvit"])
 app.include_router(users.router, prefix="/users", tags=["users"])
 #роутер авторизації
 app.include_router(authorization.router, prefix="/login")
+app.include_router(index_router, prefix="/index")
 app.include_router(workshop_router, prefix="/workshop")
 app.include_router(storage_router, prefix="/storage")
 

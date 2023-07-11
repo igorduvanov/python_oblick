@@ -2,13 +2,14 @@
 pip install fastapi[all]
 pip install sqlalchemy
 pip install alembic
+pip install python-jose[cryptography]
 #запуск проекту з main.py
 uvicorn app.main:app --reload
 #міграції
 alembic revision --autogenerate -m "Initial migration"
 alembic upgrade head
 #venv 
-Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope Process
+Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope Process 
 .\venv\Scripts\Activate
 c:/xampp/htdocs/python_oblick/venv/Scripts/Activate.ps1    
 #дані на форму авторизації

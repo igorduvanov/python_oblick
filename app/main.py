@@ -15,9 +15,7 @@ templates = Jinja2Templates(directory="app/templates")
 @app.get("/", response_class=HTMLResponse)
 async def read_root(request: Request):
     return templates.TemplateResponse("auth_page.html", {"request": request})
-#роутре для форми авторизаціх@app.get("/index", response_class=HTMLResponse)
-async def read_index(request: Request):
-    return templates.TemplateResponse("index.html", {"request": request})
+
 #css
 app.mount("/static", StaticFiles(directory="app/static"), name="static")
 # роутери на CRUD

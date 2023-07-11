@@ -4,17 +4,22 @@ from fastapi.templating import Jinja2Templates
 from fastapi import FastAPI, Request
 from fastapi.staticfiles import StaticFiles
 from app.templates import templates
+from app.workshop.workshop_routers import router as workshop_router
+from app.storage.storage_routers import router as storage_router
 
 app = FastAPI()
 
 templates = Jinja2Templates(directory="app/templates")
-
+#головна сторінка за замовчуванням
 @app.get("/", response_class=HTMLResponse)
 async def read_root(request: Request):
     return templates.TemplateResponse("auth_page.html", {"request": request})
-
+#роутре для форми авторизаціх@app.get("/index", response_class=HTMLResponse)
+async def read_index(request: Request):
+    return templates.TemplateResponse("index.html", {"request": request})
+#css
 app.mount("/static", StaticFiles(directory="app/static"), name="static")
-
+# роутери на CRUD
 app.include_router(odvumir.router, prefix="/odvumir", tags=["odvumir"])
 app.include_router(oper.router, prefix="/oper", tags=["oper"])
 app.include_router(robitnuk.router, prefix="/robitnuk", tags=["robitnuk"])
@@ -30,5 +35,6 @@ app.include_router(denzvit.router, prefix="/denzvit", tags=["denzvit"])
 app.include_router(users.router, prefix="/users", tags=["users"])
 #роутер авторизації
 app.include_router(authorization.router, prefix="/login")
-
+app.include_router(workshop_router, prefix="/workshop")
+app.include_router(storage_router, prefix="/storage")
 

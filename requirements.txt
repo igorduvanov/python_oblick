@@ -1,23 +1,30 @@
+#встановлення плаганів
 pip install fastapi[all]
 pip install sqlalchemy
 pip install alembic
+#запуск проекту з main.py
 uvicorn app.main:app --reload
+#міграції
 alembic revision --autogenerate -m "Initial migration"
 alembic upgrade head
+#venv 
 Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope Process
 .\venv\Scripts\Activate
 c:/xampp/htdocs/python_oblick/venv/Scripts/Activate.ps1    
-
+#дані на форму авторизації
+login password
+admin admin 
+workshop workshop 
+storage storage
+#структура проекту 
 python_oblick/
 │
 ├── app/
 │   ├── main.py
 │   ├── workshop/
 │   │   ├── workshop_routers.py
-│   │   ├── workshop_page.html
 │   ├── storage/
 │   │   ├── storage_routers.py
-│   │   ├── storage_page.html
 │   ├── models/
 │   │   ├── __init__.py
 │   │   ├── base.py
@@ -46,7 +53,7 @@ python_oblick/
 │   │   ├── resur.py
 │   │   ├── marshryt.py
 │   │   ├── denzvit.py
-│   │   |─  users.py
+│   │   ├── users.py
 │   │   ├── authorization.py
 │   ├── templates/
 │   │   ├── base.html
@@ -58,6 +65,8 @@ python_oblick/
 │   │   ├── price_page.html
 │   │   ├── users_page.html
 │   │   ├── auth_page.html
+│   │   ├── storage_page.html
+│   │   ├── workshop_page.html
 │   ├── static/
 │   │   ├── style.css
 │   ├── config.py

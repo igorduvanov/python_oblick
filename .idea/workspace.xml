@@ -5,8 +5,29 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="019b164c-fc17-44ba-8994-bf02091f718e" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/app/routers/nakladna.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/routers/nakladna.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/alembic.ini" beforeDir="false" afterPath="$PROJECT_DIR$/alembic.ini" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/alembic/env.py" beforeDir="false" afterPath="$PROJECT_DIR$/alembic/env.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/config.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/config.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/models/base.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/models/base.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/models/operation.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/models/operation.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/routers/authorization.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/routers/authorization.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/routers/dependencies.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/routers/dependencies.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/routers/operation.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/routers/operation.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/templates/denzvit_page.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/denzvit_page.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/templates/marshryt_page.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/marshryt_page.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/templates/material_page.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/material_page.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/templates/nakladna_page.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/nakladna_page.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/templates/odvumir_page.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/odvumir_page.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/templates/oper_page.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/oper_page.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/templates/operation_page.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/operation_page.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/templates/perelik_page.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/perelik_page.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/templates/price_page.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/price_page.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/templates/resur_page.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/resur_page.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/templates/robitnuk_page.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/robitnuk_page.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/templates/unit_page.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/unit_page.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/templates/users_page.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/users_page.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -30,9 +51,15 @@
   &quot;keyToString&quot;: {
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;dev__i&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
     &quot;last_opened_file_path&quot;: &quot;C:/xampp/htdocs/python_oblick&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;reference.settingsdialog.IDE.editor.colors&quot;
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;reference.settingsdialog.IDE.editor.colors&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
@@ -43,8 +70,16 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1683223912485</updated>
+      <workItem from="1688977936871" duration="523000" />
+      <workItem from="1688978474258" duration="6800000" />
+      <workItem from="1689052015294" duration="1552000" />
+      <workItem from="1689070148862" duration="3378000" />
+      <workItem from="1689150496457" duration="2042000" />
     </task>
     <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">

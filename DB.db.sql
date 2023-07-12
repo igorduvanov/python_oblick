@@ -1,0 +1,308 @@
+BEGIN TRANSACTION;
+CREATE TABLE IF NOT EXISTS "odvumirs" (
+	"id"	INTEGER NOT NULL,
+	"name"	VARCHAR,
+	"notes"	VARCHAR,
+	"date_created"	DATETIME,
+	"date_updated"	DATETIME,
+	PRIMARY KEY("id")
+);
+CREATE TABLE IF NOT EXISTS "opers" (
+	"id"	INTEGER NOT NULL,
+	"name"	VARCHAR,
+	"cod"	VARCHAR,
+	"date_created"	DATETIME,
+	"date_updated"	DATETIME,
+	PRIMARY KEY("id")
+);
+CREATE TABLE IF NOT EXISTS "robitnuks" (
+	"id"	INTEGER NOT NULL,
+	"name"	VARCHAR,
+	"notes"	VARCHAR,
+	"date_created"	DATETIME,
+	"date_updated"	DATETIME,
+	PRIMARY KEY("id")
+);
+CREATE TABLE IF NOT EXISTS "pereliks" (
+	"id"	INTEGER NOT NULL,
+	"coding"	VARCHAR,
+	"name"	VARCHAR,
+	"notes"	VARCHAR,
+	"date_created"	DATETIME,
+	"date_updated"	DATETIME,
+	PRIMARY KEY("id")
+);
+CREATE TABLE IF NOT EXISTS "prices" (
+	"id"	INTEGER NOT NULL,
+	"id_material"	INTEGER,
+	"price"	FLOAT,
+	"id_odvumir"	INTEGER,
+	"notes"	VARCHAR,
+	"date_created"	DATETIME,
+	"date_updated"	DATETIME,
+	FOREIGN KEY("id_material") REFERENCES "materials"("id"),
+	FOREIGN KEY("id_odvumir") REFERENCES "odvumirs"("id"),
+	PRIMARY KEY("id")
+);
+CREATE TABLE IF NOT EXISTS "operations" (
+	"id"	INTEGER NOT NULL,
+	"id_perelik"	INTEGER,
+	"id_oper"	INTEGER,
+	"date_created"	DATETIME,
+	"date_updated"	DATETIME,
+	FOREIGN KEY("id_oper") REFERENCES "opers"("id"),
+	FOREIGN KEY("id_perelik") REFERENCES "pereliks"("id"),
+	PRIMARY KEY("id")
+);
+CREATE TABLE IF NOT EXISTS "marshryts" (
+	"id"	INTEGER NOT NULL,
+	"id_perelik"	INTEGER,
+	"number"	INTEGER,
+	"id_operation"	INTEGER,
+	"date_created"	DATETIME,
+	"date_updated"	DATETIME,
+	FOREIGN KEY("id_operation") REFERENCES "operations"("id"),
+	FOREIGN KEY("id_perelik") REFERENCES "pereliks"("id"),
+	PRIMARY KEY("id")
+);
+CREATE TABLE IF NOT EXISTS "denzvits" (
+	"id"	INTEGER NOT NULL,
+	"id_robitnuk"	INTEGER,
+	"id_operation"	INTEGER,
+	"kilkist"	INTEGER,
+	"id_odvumir"	INTEGER,
+	"date_created"	DATETIME,
+	"date_updated"	DATETIME,
+	FOREIGN KEY("id_robitnuk") REFERENCES "robitnuks"("id"),
+	FOREIGN KEY("id_odvumir") REFERENCES "odvumirs"("id"),
+	FOREIGN KEY("id_operation") REFERENCES "operations"("id"),
+	PRIMARY KEY("id")
+);
+CREATE TABLE IF NOT EXISTS "alembic_version" (
+	"version_num"	VARCHAR(32) NOT NULL,
+	CONSTRAINT "alembic_version_pkc" PRIMARY KEY("version_num")
+);
+CREATE TABLE IF NOT EXISTS "units" (
+	"id"	INTEGER NOT NULL,
+	"name"	VARCHAR,
+	"notes"	VARCHAR,
+	"date_created"	DATETIME,
+	"date_updated"	DATETIME,
+	PRIMARY KEY("id")
+);
+CREATE TABLE IF NOT EXISTS "materials" (
+	"id"	INTEGER NOT NULL,
+	"weight"	FLOAT,
+	"notes"	VARCHAR,
+	"date_created"	DATETIME,
+	"date_updated"	DATETIME,
+	"id_perelik"	INTEGER,
+	"id_odvumir"	INTEGER,
+	CONSTRAINT "fk_materials_pereliks" FOREIGN KEY("id_perelik") REFERENCES "pereliks"("id"),
+	CONSTRAINT "fk_materials_odvumirs" FOREIGN KEY("id_odvumir") REFERENCES "odvumirs"("id"),
+	PRIMARY KEY("id")
+);
+CREATE TABLE IF NOT EXISTS "resurs" (
+	"id"	INTEGER NOT NULL,
+	"id_operation"	INTEGER,
+	"id_perelik"	INTEGER,
+	"kilkist"	FLOAT,
+	"id_odvumir"	INTEGER,
+	"date_created"	DATETIME,
+	"date_updated"	DATETIME,
+	"number"	INTEGER,
+	FOREIGN KEY("id_operation") REFERENCES "operations"("id"),
+	FOREIGN KEY("id_odvumir") REFERENCES "odvumirs"("id"),
+	FOREIGN KEY("id_perelik") REFERENCES "pereliks"("id"),
+	PRIMARY KEY("id")
+);
+CREATE TABLE IF NOT EXISTS "nakladnas" (
+	"id"	INTEGER NOT NULL,
+	"number"	VARCHAR(13),
+	"address_1"	INTEGER,
+	"address_2"	INTEGER,
+	"id_perelik"	INTEGER,
+	"kilkist"	VARCHAR(13),
+	"id_odvumir"	INTEGER,
+	"notes"	VARCHAR(13),
+	"date_created"	DATETIME,
+	"date_updated"	DATETIME,
+	FOREIGN KEY("address_2") REFERENCES "units"("id"),
+	FOREIGN KEY("id_perelik") REFERENCES "pereliks"("id"),
+	FOREIGN KEY("id_odvumir") REFERENCES "odvumirs"("id"),
+	FOREIGN KEY("address_1") REFERENCES "units"("id"),
+	PRIMARY KEY("id")
+);
+CREATE TABLE IF NOT EXISTS "users" (
+	"id"	INTEGER NOT NULL,
+	"login"	VARCHAR,
+	"role"	VARCHAR,
+	"notes"	VARCHAR,
+	"date_created"	DATETIME,
+	"date_updated"	DATETIME,
+	"password"	VARCHAR,
+	PRIMARY KEY("id")
+);
+INSERT INTO "odvumirs" VALUES (1,'шт.','штука','2023-05-01 18:08:46.287087','2023-05-01 21:08:46.287087');
+INSERT INTO "odvumirs" VALUES (2,'мм.','міліметр','2023-05-01 18:10:03.712141','2023-05-01 21:10:03.712141');
+INSERT INTO "odvumirs" VALUES (3,'см.','сантиметр','2023-05-04 09:29:26.259994','2023-05-04 12:29:26.259994');
+INSERT INTO "odvumirs" VALUES (4,'м.','метр','2023-05-04 10:19:15.935628','2023-05-04 13:19:15.935628');
+INSERT INTO "odvumirs" VALUES (5,'км.','кілометр','2023-05-05 05:48:12.202688','2023-05-05 08:48:12.202688');
+INSERT INTO "odvumirs" VALUES (6,'гр.','грам','2023-05-05 05:48:31.139218','2023-05-05 08:48:31.139219');
+INSERT INTO "odvumirs" VALUES (7,'кг.','кілограм','2023-05-05 05:49:06.393228','2023-05-05 08:49:06.393229');
+INSERT INTO "odvumirs" VALUES (8,'т.','тонна','2023-05-05 05:50:56.561172','2023-05-05 08:50:56.561172');
+INSERT INTO "opers" VALUES (1,'4100','Обробка різанням','2023-05-06 07:44:57.069341','2023-05-06 10:44:57.069342');
+INSERT INTO "opers" VALUES (2,'4110','Токарна','2023-05-06 07:45:08.356739','2023-05-06 10:45:08.356739');
+INSERT INTO "opers" VALUES (3,'4130','Шліфувальна','2023-05-06 07:45:18.405379','2023-05-06 10:45:18.405379');
+INSERT INTO "opers" VALUES (4,'4210','Свердлильна','2023-05-06 07:45:41.140937','2023-05-06 10:45:41.140938');
+INSERT INTO "opers" VALUES (5,'4260','Фрезерна','2023-05-06 07:46:00.220824','2023-05-06 10:46:00.220825');
+INSERT INTO "opers" VALUES (6,'4280','Відрізна','2023-05-06 07:46:10.577233','2023-05-06 10:46:10.577234');
+INSERT INTO "opers" VALUES (7,'5000','Термічна обробка','2023-05-06 07:46:27.189061','2023-05-06 10:46:27.189061');
+INSERT INTO "opers" VALUES (8,'8800','Зборка','2023-05-06 07:47:07.204274','2023-05-06 10:47:07.204275');
+INSERT INTO "opers" VALUES (9,'0200','Контроль','2023-05-06 07:47:47.100797','2023-05-06 10:47:47.100798');
+INSERT INTO "robitnuks" VALUES (2,'Антецький Віктор Анатолійович','фрезерувальник','2023-05-05 14:23:58.125919','2023-05-05 17:23:58.125920');
+INSERT INTO "robitnuks" VALUES (3,'Вільшанська Галина Іванівна','пресувальник','2023-05-06 07:02:06.038518','2023-05-06 10:02:06.038518');
+INSERT INTO "robitnuks" VALUES (4,'Дукач Олександр Миколайович','муляр','2023-05-06 07:02:21.925571','2023-05-06 10:02:21.925572');
+INSERT INTO "robitnuks" VALUES (5,'Качур Іван Богданович','муляр','2023-05-06 07:02:34.813570','2023-05-06 10:02:34.813570');
+INSERT INTO "pereliks" VALUES (2,'1','1','1','2023-05-05 17:03:41.479411','2023-05-05 20:03:41.479411');
+INSERT INTO "pereliks" VALUES (3,'Круг 14','20Х13','','2023-05-06 05:40:05.624715','2023-05-06 08:40:05.624716');
+INSERT INTO "pereliks" VALUES (4,'Круг 16','20Х13','','2023-05-06 05:40:21.040127','2023-05-06 08:40:21.040128');
+INSERT INTO "pereliks" VALUES (5,'Круг 26','20Х13','','2023-05-06 05:40:35.216348','2023-05-06 08:40:35.216349');
+INSERT INTO "pereliks" VALUES (6,'Круг 30','20Х13','','2023-05-06 05:40:45.032490','2023-05-06 08:40:45.032490');
+INSERT INTO "pereliks" VALUES (7,'Круг 30','20Х13','','2023-05-06 05:42:28.536287','2023-05-06 08:42:28.536287');
+INSERT INTO "pereliks" VALUES (8,'Круг 38','20Х13','','2023-05-06 05:42:38.224181','2023-05-06 08:42:38.224182');
+INSERT INTO "pereliks" VALUES (9,'Круг 16','Ст3','','2023-05-06 05:43:10.425078','2023-05-06 08:43:10.425079');
+INSERT INTO "pereliks" VALUES (10,'Круг 18','Ст3','','2023-05-06 05:43:18.480304','2023-05-06 08:43:18.480305');
+INSERT INTO "pereliks" VALUES (11,'Круг 20','Ст3','','2023-05-06 05:43:31.176773','2023-05-06 08:43:31.176773');
+INSERT INTO "pereliks" VALUES (12,'Круг 22','Ст3','','2023-05-06 05:43:47.064013','2023-05-06 08:43:47.064013');
+INSERT INTO "pereliks" VALUES (13,'Круг 32','Ст3','','2023-05-06 05:43:56.216351','2023-05-06 08:43:56.216352');
+INSERT INTO "pereliks" VALUES (14,'Круг 36','Ст3','','2023-05-06 05:44:05.920383','2023-05-06 08:44:05.920384');
+INSERT INTO "pereliks" VALUES (15,'Круг 50','Ст3','','2023-05-06 05:44:16.283127','2023-05-06 08:44:16.283128');
+INSERT INTO "pereliks" VALUES (16,'Круг 56','Ст3','','2023-05-06 05:44:23.784411','2023-05-06 08:44:23.784412');
+INSERT INTO "pereliks" VALUES (17,'Труба 21,3х2,8','Ст20','','2023-05-06 05:46:26.601091','2023-05-06 08:46:26.601092');
+INSERT INTO "pereliks" VALUES (18,'Труба 26,8х2,8','Ст20','','2023-05-06 05:46:42.288335','2023-05-06 08:46:42.288336');
+INSERT INTO "pereliks" VALUES (19,'Труба 33,5х3,2','Ст20','','2023-05-06 05:46:55.120177','2023-05-06 08:46:55.120178');
+INSERT INTO "pereliks" VALUES (20,'Труба 42,3х3,2','Ст20','','2023-05-06 05:47:08.312235','2023-05-06 08:47:08.312235');
+INSERT INTO "pereliks" VALUES (21,'Труба 48х3,5','Ст20','','2023-05-06 05:48:00.200782','2023-05-06 08:48:00.200782');
+INSERT INTO "pereliks" VALUES (22,'Труба 57х3,5','Ст20','','2023-05-06 05:53:01.697109','2023-05-06 08:53:01.697110');
+INSERT INTO "pereliks" VALUES (23,'Труба 76х3,5','Ст20','','2023-05-06 05:53:11.648086','2023-05-06 08:53:11.648086');
+INSERT INTO "pereliks" VALUES (24,'Труба 89х3,5','Ст20','','2023-05-06 05:53:28.800252','2023-05-06 08:53:28.800253');
+INSERT INTO "pereliks" VALUES (25,'Труба 42,3х2,8','Ст20','','2023-05-06 05:54:07.888547','2023-05-06 08:54:07.888548');
+INSERT INTO "pereliks" VALUES (26,'Труба 48х3,0','Ст20','','2023-05-06 05:54:32.130880','2023-05-06 08:54:32.130880');
+INSERT INTO "pereliks" VALUES (27,'Труба 57,0х3,0','Ст20','','2023-05-06 05:55:03.976148','2023-05-06 08:55:03.976148');
+INSERT INTO "pereliks" VALUES (28,'Труба 76,0х3,0','Ст20','','2023-05-06 05:55:27.744175','2023-05-06 08:55:27.744175');
+INSERT INTO "pereliks" VALUES (29,'Труба 89,0х3,0','Ст20','','2023-05-06 05:55:44.591892','2023-05-06 08:55:44.591892');
+INSERT INTO "pereliks" VALUES (30,'Лист 0,8','08Х13','','2023-05-06 05:57:12.064030','2023-05-06 08:57:12.064031');
+INSERT INTO "pereliks" VALUES (31,'Лист 1,0','08Х13','','2023-05-06 05:57:25.840060','2023-05-06 08:57:25.840060');
+INSERT INTO "pereliks" VALUES (32,'Лист 1,5','08Х13','','2023-05-06 05:57:37.943559','2023-05-06 08:57:37.943560');
+INSERT INTO "pereliks" VALUES (33,'Лист 0,8','65Г','','2023-05-06 05:58:21.935843','2023-05-06 08:58:21.935843');
+INSERT INTO "pereliks" VALUES (34,'Лист 1,0','65Г','','2023-05-06 05:58:31.855736','2023-05-06 08:58:31.855736');
+INSERT INTO "pereliks" VALUES (35,'Лист 1,5','65Г','','2023-05-06 05:58:43.112398','2023-05-06 08:58:43.112398');
+INSERT INTO "pereliks" VALUES (36,'Лист 1,8','65Г','','2023-05-06 05:58:54.248051','2023-05-06 08:58:54.248051');
+INSERT INTO "pereliks" VALUES (37,'Лист 2,0','65Г','','2023-05-06 05:59:09.791972','2023-05-06 08:59:09.791973');
+INSERT INTO "pereliks" VALUES (38,'Лист 2,5','65Г','','2023-05-06 05:59:20.815155','2023-05-06 08:59:20.815155');
+INSERT INTO "pereliks" VALUES (39,'Лист 3,0','65Г','','2023-05-06 05:59:31.863850','2023-05-06 08:59:31.863851');
+INSERT INTO "pereliks" VALUES (40,'Лист 3,5','65Г','','2023-05-06 05:59:43.863969','2023-05-06 08:59:43.863969');
+INSERT INTO "pereliks" VALUES (41,'Лист 3,8','65Г','','2023-05-06 06:00:05.017039','2023-05-06 09:00:05.017039');
+INSERT INTO "pereliks" VALUES (42,'Лист 4,0','65Г','','2023-05-06 06:00:15.871626','2023-05-06 09:00:15.871626');
+INSERT INTO "pereliks" VALUES (43,'Лист 5,0','65Г','','2023-05-06 06:00:23.727940','2023-05-06 09:00:23.727941');
+INSERT INTO "pereliks" VALUES (44,'Лист 2,0','Ст3','','2023-05-06 06:00:55.096503','2023-05-06 09:00:55.096503');
+INSERT INTO "pereliks" VALUES (45,'Лист 3,0','Ст3','','2023-05-06 06:01:06.239916','2023-05-06 09:01:06.239917');
+INSERT INTO "pereliks" VALUES (46,'Лист 5,0','Ст3','','2023-05-06 06:01:15.871886','2023-05-06 09:01:15.871886');
+INSERT INTO "pereliks" VALUES (47,'Круг калібр 4,0','Ст45','','2023-05-06 06:01:54.855892','2023-05-06 09:01:54.855892');
+INSERT INTO "pereliks" VALUES (48,'Круг калібр 8,0','Ст45','','2023-05-06 06:02:08.727679','2023-05-06 09:02:08.727679');
+INSERT INTO "pereliks" VALUES (49,'Круг калібр 10,0','СТ45','','2023-05-06 06:02:29.663599','2023-05-06 09:02:29.663600');
+INSERT INTO "pereliks" VALUES (50,'Труба 20,0х2,0','12Х17','','2023-05-06 06:04:11.871709','2023-05-06 09:04:11.871709');
+INSERT INTO "pereliks" VALUES (51,'Труба 25,0х2,0','12Х17','','2023-05-06 06:04:25.655356','2023-05-06 09:04:25.655357');
+INSERT INTO "pereliks" VALUES (52,'Труба 33,7х3,0','12Х17','','2023-05-06 06:04:41.067741','2023-05-06 09:04:41.067741');
+INSERT INTO "pereliks" VALUES (53,'Труба 42,3х3,0','12Х17','','2023-05-06 06:04:58.135212','2023-05-06 09:04:58.135213');
+INSERT INTO "pereliks" VALUES (54,'Труба 45,0х3,0','12Х17','','2023-05-06 06:05:10.063096','2023-05-06 09:05:10.063096');
+INSERT INTO "pereliks" VALUES (55,'Фторопластова суміш','Ф-80 Г-15 В-5','','2023-05-06 06:18:18.072369','2023-05-06 09:18:18.072369');
+INSERT INTO "pereliks" VALUES (56,'Фторопласт','ФК-4','','2023-05-06 06:18:35.871680','2023-05-06 09:18:35.871680');
+INSERT INTO "pereliks" VALUES (57,'Поліетилен','ПП','','2023-05-06 06:19:58.327810','2023-05-06 09:19:58.327811');
+INSERT INTO "pereliks" VALUES (58,'Штаба 20х4','Ст3','','2023-05-06 06:20:30.063027','2023-05-06 09:20:30.063027');
+INSERT INTO "pereliks" VALUES (59,'Штаба 25х5','Ст3','','2023-05-06 06:20:39.494966','2023-05-06 09:20:39.494966');
+INSERT INTO "pereliks" VALUES (60,'Штаба 30х6','','','2023-05-06 06:20:46.543462','2023-05-06 09:20:46.543462');
+INSERT INTO "pereliks" VALUES (61,'Штаба 40х8','Ст3','','2023-05-06 06:20:55.767424','2023-05-06 09:20:55.767425');
+INSERT INTO "pereliks" VALUES (62,'80.31.015-101','Корпус в зборі 11с31п DN15х10','','2023-05-06 06:32:29.636902','2023-05-06 09:32:29.636903');
+INSERT INTO "pereliks" VALUES (63,'80.31.015-001','Корпус 11с31п DN15х10','','2023-05-06 06:32:49.774366','2023-05-06 09:32:49.774366');
+INSERT INTO "pereliks" VALUES (64,'41.31.015-001','Патрубок корпуса 11с31п DN15х10','','2023-05-06 06:33:13.086830','2023-05-06 09:33:13.086830');
+INSERT INTO "pereliks" VALUES (65,'42.01.015-001','Бобишка 11с31п DN15 (10х22)','','2023-05-06 06:33:35.783271','2023-05-06 09:33:35.783271');
+INSERT INTO "pereliks" VALUES (66,'53.01.004-002','Штифт 4х9','','2023-05-06 06:33:48.598772','2023-05-06 09:33:48.598773');
+INSERT INTO "pereliks" VALUES (67,'60.01.015-001','Куля 21х10','','2023-05-06 06:34:07.342919','2023-05-06 09:34:07.342920');
+INSERT INTO "pereliks" VALUES (68,'60.01.015-001','Куля 21х10','Китай','2023-05-06 06:34:21.678484','2023-05-06 09:34:21.678484');
+INSERT INTO "pereliks" VALUES (69,'61.01.015-001','Шток 11с31п DN15 (10х41)','','2023-05-06 06:34:52.174864','2023-05-06 09:34:52.174865');
+INSERT INTO "pereliks" VALUES (70,'70.04.015-001','Ущільнення штока DN15','','2023-05-06 06:35:09.318647','2023-05-06 09:35:09.318647');
+INSERT INTO "pereliks" VALUES (71,'72.01.007-001','Гумове кільце 007-009-19','','2023-05-06 06:35:27.678766','2023-05-06 09:35:27.678766');
+INSERT INTO "pereliks" VALUES (72,'82.31.015-001','Ручкаа КТ31 DN15','','2023-05-06 06:35:44.052912','2023-05-06 09:35:44.052913');
+INSERT INTO "pereliks" VALUES (73,'55.31.015-001','Полоса ручки Кт31 DN15','','2023-05-06 06:36:02.806902','2023-05-06 09:36:02.806902');
+INSERT INTO "pereliks" VALUES (74,'71.01.016-001','Насадка на ручку DN15','','2023-05-06 06:36:16.278832','2023-05-06 09:36:16.278832');
+INSERT INTO "pereliks" VALUES (75,'40.31.015-001','Патрубок 11с31п DN15х10','','2023-05-06 06:36:37.327218','2023-05-06 09:36:37.327219');
+INSERT INTO "pereliks" VALUES (76,'50.01.015-001','Втулка кріпильна DN15х10','','2023-05-06 06:36:56.014624','2023-05-06 09:36:56.014625');
+INSERT INTO "pereliks" VALUES (77,'51.01.015-001','Пружина тарільчаста DN15х10','','2023-05-06 06:37:11.094753','2023-05-06 09:37:11.094754');
+INSERT INTO "pereliks" VALUES (78,'52.01.015-001','Шайба DN15ї10','','2023-05-06 06:37:27.052796','2023-05-06 09:37:27.052796');
+INSERT INTO "pereliks" VALUES (79,'70.01.015-001','Ущільнення кулі 11с31п DN15х10','','2023-05-06 06:37:49.238945','2023-05-06 09:37:49.238945');
+INSERT INTO "pereliks" VALUES (80,'Гайка М8','Шестигранна гайка з фланцем','','2023-05-06 06:38:26.431025','2023-05-06 09:38:26.431025');
+INSERT INTO "pereliks" VALUES (81,'11с31с015-001','Кран 11с31п DN15х10','','2023-05-06 06:38:51.543000','2023-05-06 09:38:51.543000');
+INSERT INTO "pereliks" VALUES (82,'71.02.015-001','Заглушка патрубка DN15','','2023-05-06 06:56:14.030324','2023-05-06 09:56:14.030324');
+INSERT INTO "prices" VALUES (3,6,566.0,3,'','2023-05-11 08:15:43.363812','2023-05-11 08:15:43.363812');
+INSERT INTO "prices" VALUES (4,5,1111.0,1,'','2023-05-11 08:53:57.630477','2023-05-11 08:53:57.630477');
+INSERT INTO "operations" VALUES (2,4,4,'2023-07-06 13:23:00.323933','2023-07-06 16:23:00.323934');
+INSERT INTO "operations" VALUES (3,3,5,'2023-07-06 13:25:14.396192','2023-07-06 16:25:14.396193');
+INSERT INTO "marshryts" VALUES (1,6,2,3,'2023-07-08 12:58:03.639313','2023-07-08 15:58:03.639313');
+INSERT INTO "denzvits" VALUES (1,4,3,15,2,'2023-07-08 13:14:16.164499','2023-07-08 16:14:16.164500');
+INSERT INTO "denzvits" VALUES (2,2,2,9,1,'2023-07-09 07:34:55.121422','2023-07-09 12:27:38.949682');
+INSERT INTO "alembic_version" VALUES ('94ca7c80f59e');
+INSERT INTO "units" VALUES (1,'гусятин','','2023-05-11 13:04:46.479202','2023-05-11 13:04:46.479202');
+INSERT INTO "units" VALUES (2,'терн','ntcn','2023-05-11 13:04:56.550947','2023-07-09 11:02:56.140393');
+INSERT INTO "materials" VALUES (5,1234.0,'','2023-05-11 06:51:23.000406','2023-05-11 09:51:23.000407',3,3);
+INSERT INTO "materials" VALUES (6,23.0,'test2','2023-05-11 07:21:01.482554','2023-05-11 10:21:01.482554',19,2);
+INSERT INTO "materials" VALUES (7,123.0,'','2023-05-11 08:53:08.803010','2023-05-11 11:53:08.803010',3,3);
+INSERT INTO "resurs" VALUES (1,2,18,15.0,2,'2023-07-08 12:26:43.379673','2023-07-08 15:26:43.379674',2);
+INSERT INTO "nakladnas" VALUES (1,'60078591334',1,1,2,'15.0',5,'test2','2023-05-12 13:36:41.102533','2023-05-12 13:36:41.102533');
+INSERT INTO "nakladnas" VALUES (2,'3',2,1,2,'5.0',5,'1','2023-05-12 14:32:53.121075','2023-05-12 14:32:53.121075');
+INSERT INTO "nakladnas" VALUES (3,'6',1,2,17,'15.0',3,'test2','2023-05-12 16:33:54.506665','2023-05-12 16:33:54.506665');
+INSERT INTO "nakladnas" VALUES (4,'33',1,2,79,'5.0',3,'','2023-05-12 16:37:37.657230','2023-05-12 16:37:37.657230');
+INSERT INTO "users" VALUES (1,'admin','admin','admin','2023-07-09 18:29:29.324338','2023-07-09 18:40:47.857293','admin');
+INSERT INTO "users" VALUES (2,'workshop','workshop','workshop','2023-07-09 18:37:19.839222','2023-07-09 18:37:19.839222','workshop');
+INSERT INTO "users" VALUES (3,'storage','storage','storage','2023-07-11 09:08:02.272744','2023-07-11 09:08:02.272744','storage');
+CREATE INDEX IF NOT EXISTS "ix_odvumirs_id" ON "odvumirs" (
+	"id"
+);
+CREATE INDEX IF NOT EXISTS "ix_opers_id" ON "opers" (
+	"id"
+);
+CREATE INDEX IF NOT EXISTS "ix_robitnuks_id" ON "robitnuks" (
+	"id"
+);
+CREATE INDEX IF NOT EXISTS "ix_pereliks_id" ON "pereliks" (
+	"id"
+);
+CREATE INDEX IF NOT EXISTS "ix_prices_id" ON "prices" (
+	"id"
+);
+CREATE INDEX IF NOT EXISTS "ix_operations_id" ON "operations" (
+	"id"
+);
+CREATE INDEX IF NOT EXISTS "ix_marshryts_id" ON "marshryts" (
+	"id"
+);
+CREATE INDEX IF NOT EXISTS "ix_denzvits_id" ON "denzvits" (
+	"id"
+);
+CREATE INDEX IF NOT EXISTS "ix_materials_id" ON "materials" (
+	"id"
+);
+CREATE INDEX IF NOT EXISTS "ix_resurs_id" ON "resurs" (
+	"id"
+);
+CREATE INDEX IF NOT EXISTS "ix_units_id" ON "units" (
+	"id"
+);
+CREATE INDEX IF NOT EXISTS "ix_users_id" ON "users" (
+	"id"
+);
+CREATE INDEX IF NOT EXISTS "ix_nakladnas_id" ON "nakladnas" (
+	"id"
+);
+COMMIT;

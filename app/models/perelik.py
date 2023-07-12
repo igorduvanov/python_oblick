@@ -8,5 +8,5 @@ class Perelik(Base):                                                       # П�
     coding = Column(String)                                                 # Кодування
     name = Column(String)                                                   # Марка матеріалу
     notes = Column(String)                                                  # Приміітки
-    date_created = Column(DateTime(), default=datetime.utcnow)
-    date_updated = Column(DateTime(), default=datetime.today)
+    date_created = Column(DateTime, default=datetime.today)
+    date_updated = Column(DateTime, default=datetime.today, onupdate=datetime.today)

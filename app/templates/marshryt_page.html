@@ -1,0 +1,137 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <a href="/index">Назад до головної сторінки</a>
+    <h1>Таблиця маршрутів для операцій CRUD</h1>
+
+    <form id="marshrytForm">
+        <select name="id_operation">
+            <option value="">Виберіть операцію</option>
+            {% for operation in operations %}
+                <option value="{{ operation.id }}">{{ operation.Oper.name }}</option>
+            {% endfor %}
+        </select>
+        <input type="number" name="number" placeholder="Номер обов'язковий">
+        <select name="id_perelik">
+            <option value="">Виберіть perelik</option>
+            {% for perelik in pereliks %}
+                <option value="{{ perelik.id }}">{{ perelik.coding }}</option>
+            {% endfor %}
+        </select>
+        <button type="button" onclick="submitForm()">Додати</button>
+    </form>
+
+    <h2>Таблиця маршрутів</h2>
+    <form id="searchForm" onsubmit="event.preventDefault(); searchAndSort();">
+        <input type="text" name="search" placeholder="Пошук за номером" value="{{ search if search }}">
+        <select name="sort_by">
+            <option value="">Сортувати за номером</option>
+            <option value="number_asc" {% if sort_by == "number_asc" %}selected{% endif %}>Ascending</option>
+            <option value="number_desc" {% if sort_by == "number_desc" %}selected{% endif %}>Descending</option>
+        </select>
+        <input type="number" name="year" placeholder="Year" value="{{ year if year }}" min="1900" max="2099" step="1">
+        <button type="submit">Пошук і сортування</button>
+    </form>
+    
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>операції</th>
+            <th>номер</th>
+            <th>Перелік</th>                  
+            <th>Дата створення</th>
+            <th>Дата оновлена</th>
+            <th>Дії</th>
+        </tr>
+        {% for marshryt in marshryts %}
+            <tr>
+                <td>{{ marshryt.id }}</td>      
+                <td>{{ marshryt.Operation.Oper.name }}</td>        
+                <td>{{ marshryt.number }}</td>
+                <td>{{ marshryt.Perelik.coding }}</td>
+                <td>{{ marshryt.date_created.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+                <td>{{ marshryt.date_updated.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+                <td>
+                    <button onclick="editMarshrytNumber({{ marshryt.id }})">Редагувати номер</button>
+                    <button onclick="deleteMarshryt({{ marshryt.id }})">Видалити</button>
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    function searchAndSort() {
+        const searchForm = document.getElementById('searchForm');
+        const formData = new FormData(searchForm);
+        const searchParams = new URLSearchParams(formData);
+
+        window.location.href = `/marshryt/marshryt_page?${searchParams.toString()}`;
+    }
+
+    async function submitForm() {
+        const form = document.getElementById('marshrytForm');
+        const formData = new FormData(form);
+        const jsonData = {};
+
+        for (const [key, value] of formData.entries()) {
+            jsonData[key] = value;
+        }
+        const response = await fetch('/marshryt/marshryt/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(jsonData)
+        });
+
+        if (response.ok) {
+            window.location.reload();
+        } else {
+            // Handle errors
+            console.error('Error:', response.statusText);
+        }
+    }
+
+    async function editMarshrytNumber(marshrytId) {
+        const newNumber = prompt("Введіть новий номер (залиште порожнім, щоб не змінювати):");
+
+        const jsonData = {};
+
+        if (newNumber !== "") {
+            jsonData["number"] = parseInt(newNumber);
+        }
+
+        const response = await fetch(`/marshryt/marshryt/${marshrytId}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(jsonData)
+        });
+
+        if (response.ok) {
+            window.location.reload();
+        } else {
+            console.error('Error:', response.statusText);
+        }
+    }
+
+    async function deleteMarshryt(marshrytId) {
+        if (!confirm('Ви дійсно хочете видалити цей маршрут?')) {
+            return;
+        }
+
+        const response = await fetch(`/marshryt/marshryt/${marshrytId}`, {
+            method: 'DELETE',
+        });
+
+        if (response.ok) {
+            window.location.reload();
+        } else {
+            console.error('Error:', response.statusText);
+        }
+    }
+</script>
+{% endblock %}

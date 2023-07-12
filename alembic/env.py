@@ -1,8 +1,7 @@
+from app.models import Base
 from logging.config import fileConfig
-
 from sqlalchemy import engine_from_config
 from sqlalchemy import pool
-
 from alembic import context
 import sys
 sys.path = ['', '..'] + sys.path[1:]  # Add the app directory to the Python path

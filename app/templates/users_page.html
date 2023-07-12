@@ -1,0 +1,201 @@
+{% extends "base.html" %}
+
+{% block content %}
+<a href="/index">Назад до головної сторінки</a>
+
+    <h1>Користувачі операції CRUD</h1>
+
+    <form id="userForm">
+        <input type="text" name="login" placeholder="Логін">
+        <input type="text" name="password" placeholder="Пароль">
+        <input type="text" name="role" placeholder="Роль">
+        <input type="text" name="notes" placeholder="Нотатки">
+        <button type="button" onclick="submitForm()">Додати</button>
+    </form>
+
+    <h2>Користувачі</h2>
+    <form id="searchForm" onsubmit="event.preventDefault(); searchAndSort();">
+        <input type="text" name="search" placeholder="Пошук за логіном" value="{{ search if search }}">
+        <select name="sort_by">
+            <option value="">Сортуйте за роком</option>
+            <option value="year_asc" {% if sort_by == "year_asc" %}selected{% endif %}>Висхід</option>
+            <option value="year_desc" {% if sort_by == "year_desc" %}selected{% endif %}>Низхідний</option>
+        </select>
+        <button type="submit">Пошук і сортування</button>
+    </form>
+    
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Логін</th>
+            <th>Пароль</th>
+            <th>Роль</th>
+            <th>Нотатки</th>
+            <th>Дата створена</th>
+            <th>Дата оновлена</th>
+            <th>Дії</th>
+        </tr>
+        {% for user in users %}
+            <tr>
+                <td>{{ user.id }}</td>
+                <td>{{ user.login }}</td>
+                <td>{{ user.password }}</td>
+                <td>{{ user.role }}</td>
+                <td>{{ user.notes }}</td>
+                <td>{{ user.date_created.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+                <td>{{ user.date_updated.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+                <td>
+                    <button onclick="editUserLogin({{ user.id }})">Редагувати логін</button>
+                    <button onclick="editUserPassword({{ user.id }})">Редагувати пароль</button>
+                    <button onclick="editUserRole({{ user.id }})">Редагувати роль</button>
+                    <button onclick="editUserNotes({{ user.id }})">Редагувати нотатки</button>
+                    <button onclick="deleteUser({{ user.id }})">Видалити</button>
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}
+
+{% block scripts %}
+<script>
+     function searchAndSort() {
+        const searchForm = document.getElementById('searchForm');
+        const formData = new FormData(searchForm);
+        const searchParams = new URLSearchParams(formData);
+
+        window.location.href = `/users/users_page?${searchParams.toString()}`;
+    }
+    async function submitForm() {
+        const form = document.getElementById('userForm');
+        const formData = new FormData(form);
+        const jsonData = {};
+
+        for (const [key, value] of formData.entries()) {
+            jsonData[key] = value;
+        }
+        const response = await fetch('/users/users/', {
+            method: 'POST',
+            headers: {
+           'Content-Type': 'application/json'
+             },
+             body: JSON.stringify(jsonData)
+        });
+
+        if (response.ok) {
+            window.location.reload();
+        } else {
+            console.error('Error:', response.statusText);
+        }
+    }
+    async function editUserLogin(userId) {
+        const newLogin = prompt("Введіть новий логін (залиште порожнім, щоб не змінювати):");
+
+        const jsonData = {};
+
+        if (newLogin !== "") {
+            jsonData["login"] = newLogin;
+        }
+
+        const response = await fetch(`/users/users/${userId}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(jsonData)
+        });
+
+        if (response.ok) {
+            window.location.reload();
+        } else {
+            console.error('Error:', response.statusText);
+        }
+    }
+    async function editUserPassword(userId) {
+        const newPassword = prompt("Введіть новий пароль (залиште порожнім, щоб не змінити):");
+
+        const jsonData = {};
+
+        if (newPassword !== "") {
+            jsonData["password"] = newPassword;
+        }
+
+        const response = await fetch(`/users/users/${userId}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(jsonData)
+        });
+
+        if (response.ok) {
+            window.location.reload();
+        } else {
+            console.error('Error:', response.statusText);
+        }
+    }
+
+    async function editUserRole(userId) {
+        const newRole = prompt("Введіть нову роль (залиште порожнім, щоб не змінювати):");
+
+        const jsonData = {};
+
+        if (newRole !== "") {
+            jsonData["role"] = newRole;
+        }
+
+        const response = await fetch(`/users/users/${userId}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(jsonData)
+        });
+
+        if (response.ok) {
+            window.location.reload();
+        } else {
+            console.error('Error:', response.statusText);
+        }
+    }
+
+    async function editUserNotes(userId) {
+        const newNotes = prompt("Введіть нові нотатки (залиште порожні, щоб не змінювати):");
+
+        const jsonData = {};
+
+        if (newNotes !== "") {
+            jsonData["notes"] = newNotes;
+        }
+
+        const response = await fetch(`/users/users/${userId}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(jsonData)
+        });
+
+        if (response.ok) {
+            window.location.reload();
+        } else {
+            console.error('Error:', response.statusText);
+        }
+    }
+
+    async function deleteUser(userId) {
+        if (!confirm('Ви дійсно хочете видалити цього користувача?')) {
+            return;
+        }
+
+        const response = await fetch(`/users/users/${userId}`, {
+             method: 'DELETE',
+        });
+
+        if (response.ok) {
+            window.location.reload();
+        } else {
+            console.error('Error:', response.statusText);
+        }
+    }
+</script>
+{% endblock %}

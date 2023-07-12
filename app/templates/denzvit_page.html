@@ -1,0 +1,138 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <a href="/index">Повернутися на головну сторінку</a>
+    <h1>Таблиця Denzvit для операцій CRUD</h1>
+
+    <form id="denzvitForm">
+        <select name="id_robitnuk">
+            <option value="">Виберіть робітника</option>
+            {% for robitnuk in robitnuks %}
+                <option value="{{ robitnuk.id }}">{{ robitnuk.name }}</option>
+            {% endfor %}
+        </select>
+        <select name="id_operation">
+            <option value="">Виберіть операцію</option>
+            {% for operation in operations %}
+                <option value="{{ operation.id }}">{{ operation.Oper.name }}</option>
+            {% endfor %}
+        </select>
+        <input type="number" name="kilkist" placeholder="Кількість" step="0.01">
+        <select name="id_odvumir">
+            <option value="">Виберіть одвиміру</option>
+            {% for odvumir in odvumirs %}
+                <option value="{{ odvumir.id }}">{{ odvumir.name }}</option>
+            {% endfor %}
+        </select>
+        <button type="button" onclick="submitForm()">Додати</button>
+    </form>
+
+    <h2>Таблиця Denzvit</h2>
+    <form id="searchForm" onsubmit="event.preventDefault(); searchAndSort();">
+        <input type="text" name="search" placeholder="Пошук робітника" value="{{ search if search }}">
+        <button type="submit">Пошук і сортування</button>
+    </form>
+    
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Робітник</th>
+            <th>Операція</th>
+            <th>Кількість</th>
+            <th>Одвиміру</th>
+            <th>Дата створення</th>
+            <th>Дата оновлена</th>
+            <th>Дії</th>
+        </tr>
+        {% for denzvit in denzvits %}
+            <tr>
+                <td>{{ denzvit.id }}</td>      
+                <td>{{ denzvit.Robitnuk.name }}</td>        
+                <td>{{ denzvit.Operation.Oper.name }}</td>
+                <td>{{ denzvit.kilkist }}</td>
+                <td>{{ denzvit.Odvumir.name }}</td>
+                <td>{{ denzvit.date_created.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+                <td>{{ denzvit.date_updated.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+                <td>
+                    <button onclick="editDenzvitKilkist({{ denzvit.id }})">Редагувати кількість</button>
+                    <button onclick="deleteDenzvit({{ denzvit.id }})">Видалити</button>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+    {% endblock %}
+    
+    {% block scripts %}
+    <script>
+        function searchAndSort() {
+            const searchForm = document.getElementById('searchForm');
+            const formData = new FormData(searchForm);
+            const searchParams = new URLSearchParams(formData);
+    
+            window.location.href = `/denzvit/denzvit_page?${searchParams.toString()}`;
+        }
+    
+        async function submitForm() {
+            const form = document.getElementById('denzvitForm');
+            const formData = new FormData(form);
+            const jsonData = {};
+    
+            for (const [key, value] of formData.entries()) {
+                jsonData[key] = value;
+            }
+            const response = await fetch('/denzvit/denzvit/', {
+                method: 'POST',
+                headers: {
+               'Content-Type': 'application/json'
+                 },
+                body: JSON.stringify(jsonData)
+            });
+    
+            if (response.ok) {
+                window.location.reload();
+            } else
+                // Handle errors
+                console.error('Error:', response.statusText);
+            }
+        
+        async function editDenzvitKilkist(denzvitId) {
+            const newKilkist = prompt("Введіть нову кількість (залиште порожнім, щоб не змінювати):");
+    
+            const jsonData = {};
+    
+            if (newKilkist !== "") {
+                jsonData["kilkist"] = parseInt(newKilkist);
+            }
+    
+            const response = await fetch(`/denzvit/denzvit/${denzvitId}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(jsonData)
+            });
+    
+            if (response.ok) {
+                window.location.reload();
+            } else {
+                console.error('Error:', response.statusText);
+            }
+        }
+    
+        async function deleteDenzvit(denzvitId) {
+            if (!confirm('Ви дійсно хочете видалити цей дензвит?')) {
+                return;
+            }
+    
+            const response = await fetch(`/denzvit/denzvit/${denzvitId}`, {
+                 method: 'DELETE',
+            });
+    
+            if (response.ok) {
+                window.location.reload();
+            } else {
+                console.error('Error:', response.statusText);
+            }
+        }
+    </script>
+    {% endblock %}

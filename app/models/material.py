@@ -13,5 +13,5 @@ class Material(Base):
     notes = Column(String)                            
     Perelik = relationship("Perelik") 
     Odvumir = relationship("Odvumir")                     #
-    date_created = Column(DateTime(), default=datetime.utcnow)
-    date_updated = Column(DateTime(), default=datetime.today)
+    date_created = Column(DateTime, default=datetime.today)
+    date_updated = Column(DateTime, default=datetime.today, onupdate=datetime.today)

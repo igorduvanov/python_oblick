@@ -7,5 +7,5 @@ class Oper(Base):
     id = Column(Integer, primary_key=True, index=True)                      #
     name = Column(String)                                                   # операції по стандарту
     cod = Column(String)                                                    #
-    date_created = Column(DateTime(), default=datetime.utcnow)
-    date_updated = Column(DateTime(), default=datetime.utcnow)
+    date_created = Column(DateTime, default=datetime.today)
+    date_updated = Column(DateTime, default=datetime.today, onupdate=datetime.today)

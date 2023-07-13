@@ -2,55 +2,51 @@
 {% block content %}
 <h1>Добавлення нового дензвиту</h1>
 <form id="denzvitForm">
-    <div id="fieldContainer">
-        <div class="fieldRow">
-            <input type="number" name="id_robitnuk[]" placeholder="ID Робітника">
-            <input type="number" name="id_operation[]" placeholder="ID Операції">
-            <input type="number" name="kilkist[]" placeholder="Кількість">
-            <input type="number" name="id_odvumir[]" placeholder="ID Одвиміру">
-        </div>
-    </div>
-    <button type="button" id="addFieldButton">Додати поле</button>
-    <button type="button" onclick="submitForm()">Відправити</button>
+    <select name="id_robitnuk">
+        <option value="">Виберіть робітника</option>
+        {% for robitnuk in robitnuks %}
+            <option value="{{ robitnuk.id }}">{{ robitnuk.name }}</option>
+        {% endfor %}
+    </select>
+    <select name="id_operation">
+        <option value="">Виберіть операцію</option>
+        {% for operation in operations %}
+            <option value="{{ operation.id }}">{{ operation.Oper.name }}</option>
+        {% endfor %}
+    </select>
+    <input type="number" name="kilkist" placeholder="Кількість" step="0.01">
+    <select name="id_odvumir">
+        <option value="">Виберіть одвиміру</option>
+        {% for odvumir in odvumirs %}
+            <option value="{{ odvumir.id }}">{{ odvumir.name }}</option>
+        {% endfor %}
+    </select>
+    <button type="button" onclick="submitForm()">Додати</button>
 </form>
 <script>
-    document.getElementById('addFieldButton').addEventListener('click', function() {
-        var container = document.getElementById('fieldContainer');
-        var newFieldRow = document.createElement('div');
-        newFieldRow.classList.add('fieldRow');
-        newFieldRow.innerHTML = `
-            <input type="number" name="id_robitnuk[]" placeholder="ID Робітника">
-            <input type="number" name="id_operation[]" placeholder="ID Операції">
-            <input type="number" name="kilkist[]" placeholder="Кількість">
-            <input type="number" name="id_odvumir[]" placeholder="ID Одвиміру">
-        `;
-        container.appendChild(newFieldRow);
-    });
-
-    async function submitForm() {
-    const form = document.getElementById('denzvitForm');
-    const formData = new FormData(form);
-    const jsonData = {};
-    for (let key of formData.keys()) {
-        key = key.replace('[]', '');
-        jsonData[key] = formData.getAll(key).map(val => parseInt(val));
-    }
-
-    const response = await fetch('/workshop/workshop/workshop_denzvit_form', { // Changed URL here
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(jsonData)
-      
-    });
-
-    if (response.ok) {
-        window.location.reload();
-    } else {
-        console.error('Error:', response.statusText);
-    }
-}
-
+//===========================
+        async function submitForm() {
+            const form = document.getElementById('denzvitForm');
+            const formData = new FormData(form);
+            const jsonData = {};
+    
+            for (const [key, value] of formData.entries()) {
+                jsonData[key] = value;
+            }
+            const response = await fetch('/workshop/workshop/workshop_denzvit_form', {
+                method: 'POST',
+                headers: {
+               'Content-Type': 'application/json'
+                 },
+                body: JSON.stringify(jsonData)
+            });
+    
+            if (response.ok) {
+                window.location.reload();
+            } else
+                // Handle errors
+                console.error('Error:', response.statusText);
+            }
+            
 </script>
 {% endblock %}

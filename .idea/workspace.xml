@@ -7,7 +7,6 @@
     <list default="true" id="019b164c-fc17-44ba-8994-bf02091f718e" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/DB.db" beforeDir="false" afterPath="$PROJECT_DIR$/app/DB.db" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/main.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/workshop/workshop_routers.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/workshop/workshop_routers.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/workshop/workshop_templates/workshop_denzvit_form.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/workshop/workshop_templates/workshop_denzvit_form.html" afterDir="false" />
     </list>
@@ -57,6 +56,7 @@
       <workItem from="1689052015294" duration="1552000" />
       <workItem from="1689070148862" duration="3378000" />
       <workItem from="1689225429560" duration="4469000" />
+      <workItem from="1689248607905" duration="687000" />
     </task>
     <servers />
   </component>

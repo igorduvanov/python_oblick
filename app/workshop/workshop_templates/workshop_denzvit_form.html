@@ -21,11 +21,11 @@
             <option value="{{ odvumir.id }}">{{ odvumir.name }}</option>
         {% endfor %}
     </select>
-    <button type="button" onclick="submitForm()">Додати</button>
+   
 </form>
 </div>
 <button onclick="addField()">Add more fields</button>
-
+<button type="button" onclick="submitForm()">Додати</button>
 <script>
  let fieldCount = 0;
     
@@ -58,33 +58,33 @@
     }
     
     async function submitForm() {
-        const form = document.getElementById('denzvitForm');
-        const formData = new FormData(form);
-        const jsonData = {};
+    const form = document.getElementById('denzvitForm');
+    const formData = new FormData(form);
+    const jsonData = {};
 
-        for (const [key, value] of formData.entries()) {
-            if (!jsonData[key]) {
-                jsonData[key] = [];
-            }
-            jsonData[key].push(value);
+    for (const [key, value] of formData.entries()) {
+        const baseKey = key.replace(/\d+$/, ""); // removing field count
+
+        if (!jsonData[baseKey]) {
+            jsonData[baseKey] = [];
         }
+        jsonData[baseKey].push(value);
+    }
 
-        const response = await fetch('/workshop/workshop/workshop_denzvit_form', {
-            method: 'POST',
-            headers: {
-           'Content-Type': 'application/json'
-             },
-            body: JSON.stringify(jsonData)
-        });
+    const response = await fetch('/workshop/workshop/workshop_denzvit_form', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(jsonData)
+    });
 
-        if (response.ok) {
-            window.location.reload();
-        } else
-            // Handle errors
-            console.error('Error:', response.statusText);
-        }
-    
-
+    if (response.ok) {
+        window.location.reload();
+    } else
+        // Handle errors
+        console.error('Error:', response.statusText);
+    }  
     </script>
 {% endblock %}
 

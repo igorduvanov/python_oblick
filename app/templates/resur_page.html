@@ -1,0 +1,147 @@
+{% extends "templates/base.html" %}
+
+{% block content %}
+    <a href="/index">Повернутися на головну сторінку</a>
+    <h1>Таблиця ресурсів для операцій CRUD</h1>
+
+    <form id="resurForm">
+        <select name="id_operation">
+            <option value="">Виберіть операцію</option>
+            {% for operation in operations %}
+                <option value="{{ operation.id }}">{{ operation.Oper.name }}</option>
+            {% endfor %}
+        </select>
+        <input type="number" name="number" placeholder="Номер обов'язковий">
+        <select name="id_perelik">
+            <option value="">Виберіть perelik</option>
+            {% for perelik in pereliks %}
+                <option value="{{ perelik.id }}">{{ perelik.coding }}</option>
+            {% endfor %}
+        </select>
+        <input type="number" name="kilkist" placeholder="Кількіст p/m  необхідна" step="0.01">
+        <select name="id_odvumir">
+            <option value="">Виберіть одвиміру</option>
+            {% for odvumir in odvumirs %}
+                <option value="{{ odvumir.id }}">{{ odvumir.name }}</option>
+            {% endfor %}
+        </select>
+        <button type="button" onclick="submitForm()">Додати</button>
+    </form>
+
+    <h2>Таблиця ресурсів</h2>
+    <form id="searchForm" onsubmit="event.preventDefault(); searchAndSort();">
+        <input type="text" name="search" placeholder="Пошук за номером" value="{{ search if search }}">
+        <select name="sort_by">
+            <option value="">Сортувати за номером</option>
+            <option value="number_asc" {% if sort_by == "number_asc" %}selected{% endif %}>Ascending</option>
+            <option value="number_desc" {% if sort_by == "number_desc" %}selected{% endif %}>Descending</option>
+        </select>
+        <input type="number" name="year" placeholder="Year" value="{{ year if year }}" min="1900" max="2099" step="1">
+        <button type="submit">Пошук і сортування</button>
+    </form>
+    
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>операції</th>
+            <th>номер</th>
+            <th>Перелік</th>                  
+            <th>Кількіст</th>
+            <th>одвиміру</th>
+            <th>Дата створення</th>
+            <th>Дата оновлена</th>
+            <th>Дії</th>
+        </tr>
+        {% for resur in resurs %}
+            <tr>
+                <td>{{ resur.id }}</td>      
+                <td>{{ resur.Operation.Oper.name }}</td>        
+                <td>{{ resur.number }}</td>
+                <td>{{ resur.Perelik.coding }}</td>
+                <td>{{ resur.kilkist }}</td>
+                <td>{{ resur.Odvumir.name }}</td>
+                <td>{{ resur.date_created.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+                <td>{{ resur.date_updated.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+                <td>
+                    <button onclick="editResurNumber({{ resur.id }})">Редагувати номер</button>
+                    <button onclick="deleteResur({{ resur.id }})">Видалити</button>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+    {% endblock %}
+    
+    {% block scripts %}
+    <script>
+        function searchAndSort() {
+            const searchForm = document.getElementById('searchForm');
+            const formData = new FormData(searchForm);
+            const searchParams = new URLSearchParams(formData);
+    
+            window.location.href = `/resur/resur_page?${searchParams.toString()}`;
+        }
+    
+        async function submitForm() {
+            const form = document.getElementById('resurForm');
+            const formData = new FormData(form);
+            const jsonData = {};
+    
+            for (const [key, value] of formData.entries()) {
+                jsonData[key] = value;
+            }
+            const response = await fetch('/resur/resur/', {
+                method: 'POST',
+                headers: {
+               'Content-Type': 'application/json'
+                 },
+                body: JSON.stringify(jsonData)
+            });
+    
+            if (response.ok) {
+                window.location.reload();
+            } else
+                // Handle errors
+                console.error('Error:', response.statusText);
+            }
+        
+        async function editResurNumber(resurId) {
+            const newNumber = prompt("Введіть новий номер (залиште порожнім, щоб не змінювати):");
+    
+            const jsonData = {};
+    
+            if (newNumber !== "") {
+                jsonData["number"] = parseInt(newNumber);
+            }
+    
+            const response = await fetch(`/resur/resur/${resurId}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(jsonData)
+            });
+    
+            if (response.ok) {
+                window.location.reload();
+            } else {
+                console.error('Error:', response.statusText);
+            }
+        }
+    
+        async function deleteResur(resurId) {
+            if (!confirm('Ви дійсно хочете видалити цей ресурс?')) {
+                return;
+            }
+    
+            const response = await fetch(`/resur/resur/${resurId}`, {
+                 method: 'DELETE',
+            });
+    
+            if (response.ok) {
+                window.location.reload();
+            } else {
+                console.error('Error:', response.statusText);
+            }
+        }
+    </script>
+    {% endblock %}

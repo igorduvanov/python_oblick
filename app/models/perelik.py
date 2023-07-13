@@ -1,7 +1,6 @@
-import datetime
-from click import DateTime
-from sqlalchemy import Column, Integer, String
+from sqlalchemy import Column, Integer, String, DateTime
 from app.models.base import Base
+from datetime import datetime
 
 class Perelik(Base):                                                       # Перелік деталей, матеріалів ...
     __tablename__ = 'pereliks'
@@ -9,5 +8,5 @@ class Perelik(Base):                                                       # П�
     coding = Column(String)                                                 # Кодування
     name = Column(String)                                                   # Марка матеріалу
     notes = Column(String)                                                  # Приміітки
-    date_created = Column(DateTime(), default=datetime.utcnow)
-    date_updated = Column(DateTime(), default=datetime.today)
+    date_created = Column(DateTime, default=datetime.today)
+    date_updated = Column(DateTime, default=datetime.today, onupdate=datetime.today)

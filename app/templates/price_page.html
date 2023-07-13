@@ -1,0 +1,164 @@
+{% extends "templates/base.html" %}
+
+{% block content %}
+<a href="/index">Назад до головної сторінки</a>
+<h1>Таблиця цін</h1>
+<form id="priceForm">
+    <select name="id_material">
+        <option value="">Виберіть Матеріал</option>
+        {% for material in materials %}
+            <option value="{{ material.id }}">{{ material.Perelik.coding }} - {{ material.weight }}</option>
+        {% endfor %}
+    </select>    
+    <select name="id_odvumir">
+        <option value="">Виберіть одиницю виміру</option>
+        {% for odvumir in odvumirs %}
+            <option value="{{ odvumir.id }}">{{ odvumir.name }}</option>
+        {% endfor %}
+    </select>
+    <input type="text" name="price" placeholder="ціна">
+    <input type="text" name="notes" placeholder="Примітки">
+    <button type="button" onclick="submitForm()">добавити</button>
+</form>
+
+    <h2>Таблиця цін</h2>
+    <form id="searchForm" onsubmit="event.preventDefault(); searchAndSort();">
+        <input type="text" name="search" placeholder="Пошук за кодом матеріалу" value="{{ search if search }}">
+        <select name="sort_by">
+            <option value="">Сортуйте за роком</option>
+            <option value="year_asc" {% if sort_by == "year_asc" %}selected{% endif %}>За зростанням</option>
+            <option value="year_desc" {% if sort_by == "year_desc" %}selected{% endif %}>За спаданням</option>
+        </select>
+        <button type="submit">Пошук і сортування</button>
+    </form>
+    
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Матеріал</th>
+            <th>Ціна</th>
+            <th>Odvumir</th>
+            <th>Примітки</th>
+            <th>Дата створена</th>
+            <th>Дата оновлена</th>
+            <th>Дії</th>
+        </tr>
+        {% for price in prices %}
+            <tr>
+                <td>{{ price.id }}</td>
+                <td>{{ price.Material.Perelik.coding if price.Material and price.Material.Perelik else 'N/A' }}</td>
+                <td>{{ price.price }}</td>
+                <td>{{ price.Odvumir.name }}</td>
+                <td>{{ price.notes }}</td>
+                <td>{{ price.date_created.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+                <td>{{ price.date_updated.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+                <td>
+                    <button onclick="editPricePrice({{ price.id }})">Редагувати ціну</button>
+                    <button onclick="editPriceNotes({{ price.id }})">Редагувати нотатки</button>
+                    <button onclick="deletePrice({{ price.id }})">Видалити</button>
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}
+
+{% block scripts %}
+<script>        
+    function searchAndSort() {
+        const searchForm = document.getElementById('searchForm');
+        const formData = new FormData(searchForm);
+        const searchParams = new URLSearchParams(formData);
+
+        window.location.href = `/price/price_page?${searchParams.toString()}`;
+    }
+
+    async function submitForm() {
+        const form = document.getElementById('priceForm');
+        const formData = new FormData(form);
+        const jsonData = {};
+
+        for (const [key, value] of formData.entries()) {
+            jsonData[key] = value;
+        }
+        const response = await fetch('/price/price/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(jsonData)
+        });
+
+        if (response.ok) {
+            // Handle success, e.g., reload the page or display a message
+            window.location.reload();
+        } else {
+            // Handle errors
+            console.error('Error:', response.statusText);
+        }
+    }
+
+    async function editPricePrice(priceId) {
+        const newPrice = prompt("введіть нову назву (порожньо, щоб не змінювати):");
+
+        const jsonData = {};
+
+        if (newPrice !== "") {
+            jsonData["price"] = newPrice;
+        }
+
+        const response = await fetch(`/price/price/${priceId}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(jsonData)
+        });
+
+        if (response.ok) {
+            window.location.reload();
+        } else {
+            console.error('Error:', response.statusText);
+        }
+    }
+
+    async function editPriceNotes(priceId) {
+        const newNotes = prompt("введіть нову назву (порожньо, щоб не змінювати):");
+
+        const jsonData = {};
+
+        if (newNotes !== "") {
+            jsonData["notes"] = newNotes;
+        }
+
+        const response = await fetch(`/price/price/${priceId}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(jsonData)
+        });
+
+        if (response.ok) {
+            window.location.reload();
+        } else {
+            console.error('Error:', response.statusText);
+        }
+    }
+
+    async function deletePrice(priceId) {
+        if (!confirm('Ви впевнені, що хочете видалити цю ціну?')) {
+            return;
+        }
+
+        const response = await fetch(`/price/price/${priceId}`, {
+            method: 'DELETE',
+        });
+
+        if (response.ok) {
+            window.location.reload();
+        } else {
+            console.error('Error:', response.statusText);
+        }
+    }
+</script>
+{% endblock %}

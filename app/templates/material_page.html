@@ -1,0 +1,167 @@
+{% extends "templates/base.html" %}
+
+{% block content %}
+    <a href="/index">Назад до головної сторінки</a>
+    <h1>Таблиця матеріалів для операцій Crud</h1>
+
+    <form id="materialForm">
+        <select name="id_perelik">
+            <option value="">Виберіть перелік</option>
+            {% for perelik in pereliks %}
+                <option value="{{ perelik.id }}">{{ perelik.coding }}</option>
+            {% endfor %}
+        </select>
+        <input type="number" name="weight" placeholder="Вага p/m обовязково" step="0.01">
+        <select name="id_odvumir">
+            <option value="">Виберіть одиницю виміру</option>
+            {% for odvumir in odvumirs %}
+                <option value="{{ odvumir.id }}">{{ odvumir.name }}</option>
+            {% endfor %}
+        </select>
+        <input type="text" name="notes" placeholder="Нотатки">
+        <button type="button" onclick="submitForm()">Додавання</button>
+    </form>
+
+    <h2>Таблиця матеріалів</h2>
+    <form id="searchForm" onsubmit="event.preventDefault(); searchAndSort();">
+        <input type="text" name="search" placeholder="Пошук за кодуванням" value="{{ search if search }}">
+        <select name="sort_by">
+            <option value="">Сортувати за вагою</option>
+            <option value="weight_asc" {% if sort_by == "weight_asc" %}selected{% endif %}>за зростанням</option>
+            <option value="weight_desc" {% if sort_by == "weight_desc" %}selected{% endif %}>за спаданням</option>
+        </select>
+        <input type="number" name="year" placeholder="Рік" value="{{ year if year }}" min="1900" max="2099" step="1">
+        <button type="submit">Пошук і сортування</button>
+    </form>
+    
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>матеріалу</th>
+            <th>Вага p/m</th>
+            <th>одиниці виміру</th>                  
+            <th>Нотатки</th>
+            <th>Дата створена</th>
+            <th>Дата оновлена</th>
+            <th>Дії</th>
+        </tr>
+        {% for material in materials %}
+            <tr>
+                <td>{{ material.id }}</td>      
+                <td>{{ material.Perelik.coding }}</td>        
+                <td>{{ material.weight }}</td>
+                <td>{{ material.Odvumir.name }}</td>
+                <td>{{ material.notes }}</td>
+                <td>{{ material.date_created.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+                <td>{{ material.date_updated.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+                <td>
+                    <button onclick="editMaterialWeight({{ material.id }})">Редагувати вагу</button>
+                    <button onclick="editMaterialNotes({{ material.id }})">Редагувати примітки</button>
+                    <button onclick="deleteMaterial({{ material.id }})">Видалити</button>
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    function searchAndSort() {
+        const searchForm = document.getElementById('searchForm');
+        const formData = new FormData(searchForm);
+        const searchParams = new URLSearchParams(formData);
+
+        window.location.href = `/material/material_page?${searchParams.toString()}`;
+    }
+
+    async function submitForm() {
+        const form = document.getElementById('materialForm');
+        const formData = new FormData(form);
+        const jsonData = {};
+
+        for (const [key, value] of formData.entries()) {
+            jsonData[key] = value;
+        }
+        const response = await fetch('/material/material/', {
+            method: 'POST',
+            headers: {
+           'Content-Type': 'application/json'
+             },
+            body: JSON.stringify(jsonData)
+        });
+
+        if (response.ok) {
+            window.location.reload();
+        } else
+            // Handle errors
+            console.error('Error:', response.statusText);
+        }
+    
+    
+   
+
+    async function editMaterialWeight(materialId) {
+        const newWeight = prompt("Enter new weight (leave empty to not change):");
+
+        const jsonData = {};
+
+        if (newWeight !== "") {
+            jsonData["weight"] = parseFloat(newWeight);
+        }
+
+        const response = await fetch(`/material/material/${materialId}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(jsonData)
+        });
+
+        if (response.ok) {
+            window.location.reload();
+        } else {
+            console.error('Error:', response.statusText);
+        }
+    }
+
+    async function editMaterialNotes(materialId) {
+        const newNotes = prompt("Enter new notes (leave empty to not change):");
+
+        const jsonData = {};
+
+        if (newNotes !== "") {
+            jsonData["notes"] = newNotes;
+        }
+
+        const response = await fetch(`/material/material/${materialId}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(jsonData)
+        });
+
+        if (response.ok) {
+            window.location.reload();
+        } else {
+            console.error('Error:', response.statusText);
+        }
+    }
+
+    async function deleteMaterial(materialId) {
+        if (!confirm('Are you sure you want to delete this material?')) {
+            return;
+        }
+
+        const response = await fetch(`/material/material/${materialId}`, {
+             method: 'DELETE',
+        });
+
+        if (response.ok) {
+            window.location.reload();
+        } else {
+            console.error('Error:', response.statusText);
+        }
+    }
+</script>
+{% endblock %}

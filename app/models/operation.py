@@ -1,8 +1,7 @@
-import datetime
-from click import DateTime
-from sqlalchemy import Column, ForeignKey, Integer
+from sqlalchemy import Column, ForeignKey, Integer, DateTime
 from app.models.base import Base
 from sqlalchemy.orm import relationship
+from datetime import datetime
 
 
 class Operation(Base):
@@ -10,7 +9,7 @@ class Operation(Base):
     id = Column(Integer, primary_key=True, index=True)                      #
     id_perelik = Column(Integer, ForeignKey("pereliks.id"))                 # 
     id_oper = Column(Integer, ForeignKey("opers.id"))                       # 
-    date_created = Column(DateTime(), default=datetime.utcnow)
-    date_updated = Column(DateTime(), default=datetime.today)
     Perelik = relationship("Perelik")
     Oper = relationship("Oper")
+    date_created = Column(DateTime, default=datetime.today)
+    date_updated = Column(DateTime, default=datetime.today, onupdate=datetime.today)

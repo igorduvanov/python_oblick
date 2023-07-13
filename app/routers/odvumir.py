@@ -1,7 +1,6 @@
 from fastapi import APIRouter, HTTPException, Depends, Request
 from sqlalchemy.orm import Session
 from app.models.odvumir import Odvumir
-from app.schemas import OdvumirCreate, OdvumirUpdate, OdvumirInDB
 from app.database import get_db
 from typing import List
 from pydantic import BaseModel
@@ -13,6 +12,26 @@ from typing import Optional
 
 router = APIRouter()
 
+# Move the contents of schemas.py here
+class OdvumirBase(BaseModel):
+    name: str
+    notes: Optional[str] = None
+
+class OdvumirCreate(OdvumirBase):
+    pass
+
+class OdvumirUpdate(OdvumirBase):
+    name: Optional[str] = None
+    notes: Optional[str] = None
+
+class OdvumirInDB(OdvumirBase):
+    id: int
+    date_created: Optional[str] = None
+    date_updated: Optional[str] = None
+
+    class Config:
+        orm_mode = True
+# End of schemas.py contents
 class OdvumirOut(BaseModel):
     id: int
     name: str
@@ -48,7 +67,7 @@ async def read_odvumir_page(request: Request, db: Session = Depends(get_db), sea
 
     odvumirs = odvumirs.all()
 
-    return templates.TemplateResponse("odvumir_page.html", {"request": request, "odvumirs": odvumirs, "search": search, "sort_by": sort_by})
+    return templates.TemplateResponse("/templates/odvumir_page.html", {"request": request, "odvumirs": odvumirs, "search": search, "sort_by": sort_by})
 
 
 @router.put("/odvumir/{odvumir_id}")

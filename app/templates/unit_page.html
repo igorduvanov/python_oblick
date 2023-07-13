@@ -1,0 +1,149 @@
+{% extends "templates/base.html" %}
+
+{% block content %}
+<a href="/index">Назад до головної сторінки</a>
+
+    <h1>одиниці виміру CRUD операції</h1>
+
+    <form id="unitForm">
+        <input type="text" name="name" placeholder="Назва">
+        <input type="text" name="notes" placeholder="Нотатки">
+        <button type="button" onclick="submitForm()">добавити</button>
+    </form>
+
+    <h2>одиниці виміру </h2>
+    <form id="searchForm" onsubmit="event.preventDefault(); searchAndSort();">
+        <input type="text" name="search" placeholder="Пошук за назвою" value="{{ search if search }}">
+        <select name="sort_by">
+            <option value="">Сортувати за роком</option>
+            <option value="year_asc" {% if sort_by == "year_asc" %}selected{% endif %}>За зростанням</option>
+            <option value="year_desc" {% if sort_by == "year_desc" %}selected{% endif %}>За спаданням</option>
+        </select>
+        <button type="submit">Пошук і сортування</button>
+    </form>
+    
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Назва</th>
+            <th>Нотатки</th>
+            <th>Дата створена</th>
+            <th>Дата оновлена</th>
+            <th>Дії</th>
+        </tr>
+        {% for unit in units %}
+            <tr>
+                <td>{{ unit.id }}</td>
+                <td>{{ unit.name }}</td>
+                <td>{{ unit.notes }}</td>
+                <td>{{ unit.date_created.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+                <td>{{ unit.date_updated.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+                <td>
+                    <button onclick="editUnitName({{ unit.id }})">редагувати назву</button>
+                    <button onclick="editUnitNotes({{ unit.id }})">Редагувати нотатки</button>
+                    <button onclick="deleteUnit({{ unit.id }})">Видалити</button>
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}
+
+{% block scripts %}
+<script>
+     function searchAndSort() {
+        const searchForm = document.getElementById('searchForm');
+        const formData = new FormData(searchForm);
+        const searchParams = new URLSearchParams(formData);
+
+        window.location.href = `/unit/unit_page?${searchParams.toString()}`;
+    }
+    async function submitForm() {
+        const form = document.getElementById('unitForm');
+        const formData = new FormData(form);
+        const jsonData = {};
+
+        for (const [key, value] of formData.entries()) {
+            jsonData[key] = value;
+        }
+        const response = await fetch('/unit/unit/', {
+            method: 'POST',
+            headers: {
+           'Content-Type': 'application/json'
+             },
+             body: JSON.stringify(jsonData)
+        });
+
+        if (response.ok) {
+            // Handle success, e.g., reload the page or display a message
+            window.location.reload();
+        } else {
+            // Handle errors
+            console.error('Error:', response.statusText);
+        }
+    }
+    async function editUnitName(unitId) {
+        const newName = prompt("введіть нову назву (порожньо, щоб не змінювати):");
+
+        const jsonData = {};
+
+        if (newName !== "") {
+            jsonData["name"] = newName;
+        }
+
+        const response = await fetch(`/unit/unit/${unitId}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(jsonData)
+        });
+
+        if (response.ok) {
+            window.location.reload();
+        } else {
+            console.error('Error:', response.statusText);
+        }
+    }
+
+    async function editUnitNotes(unitId) {
+        const newNotes = prompt("введіть нову нотатки (порожньо, щоб не змінювати):");
+
+        const jsonData = {};
+
+        if (newNotes !== "") {
+            jsonData["notes"] = newNotes;
+        }
+
+        const response = await fetch(`/unit/unit/${unitId}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(jsonData)
+        });
+
+        if (response.ok) {
+            window.location.reload();
+        } else {
+            console.error('Error:', response.statusText);
+        }
+    }
+
+
+    async function deleteUnit(unitId) {
+        if (!confirm('Ви дійсно хочете видалити цю одиницю виміру?')) {
+            return;
+        }
+
+        const response = await fetch(`/unit/unit/${unitId}`, {
+             method: 'DELETE',
+        });
+
+        if (response.ok) {
+            window.location.reload();
+        } else {
+            console.error('Error:', response.statusText);
+        }
+    }
+</script>
+{% endblock %}

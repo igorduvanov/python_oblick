@@ -1,0 +1,108 @@
+{% extends "templates/base.html" %}
+
+{% block content %}
+<a href="/index">Назад до головної сторінки</a>
+<h1>Таблиця  кодів операцій</h1>
+<form id="operationForm">
+    <select name="id_perelik">
+        <option value="">Виберіть перелік</option>
+        {% for perelik in pereliks %}
+            <option value="{{ perelik.id }}">{{ perelik.coding }}</option>
+        {% endfor %}
+    </select>
+    <select name="id_oper">
+        <option value="">Виберіть операцію</option>
+        {% for oper in opers %}
+            <option value="{{ oper.id }}">{{ oper.name }}</option>
+        {% endfor %}
+    </select>
+    <button type="button" onclick="submitForm()">добавити</button>
+</form>
+
+    <h2>Таблиця операцій</h2>
+    <form id="searchForm" onsubmit="event.preventDefault(); searchAndSort();">
+        <input type="text" name="search" placeholder="Пошук за кодом переліку" value="{{ search if search }}">
+        <select name="sort_by">
+            <option value="">Сортуйте за роком</option>
+            <option value="year_asc" {% if sort_by == "year_asc" %}selected{% endif %}>За зростанням</option>
+            <option value="year_desc" {% if sort_by == "year_desc" %}selected{% endif %}>За спаданням</option>
+        </select>
+        <button type="submit">Пошук і сортування</button>
+    </form>
+
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Перелік</th>
+            <th>Операція</th>
+            <th>Дата створена</th>
+            <th>Дата оновлена</th>
+            <th>Дії</th>
+        </tr>
+        {% for operation in operations %}
+            <tr>
+                <td>{{ operation.id }}</td>
+                <td>{{ operation.Perelik.coding if operation.Perelik else 'N/A' }}</td>
+                <td>{{ operation.Oper.name if operation.Oper else 'N/A' }}</td>
+                <td>{{ operation.date_created.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+                <td>{{ operation.date_updated.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+                <td>
+                    <button onclick="deleteOperation({{ operation.id }})">Видалити</button>
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    function searchAndSort() {
+        const searchForm = document.getElementById('searchForm');
+        const formData = new FormData(searchForm);
+        const searchParams = new URLSearchParams(formData);
+
+        window.location.href = `/operation/operation_page?${searchParams.toString()}`;
+    }
+
+    async function submitForm() {
+        const form = document.getElementById('operationForm');
+        const formData = new FormData(form);
+        const jsonData = {};
+
+        for (const [key, value] of formData.entries()) {
+            jsonData[key] = value;
+        }
+        const response = await fetch('/operation/operation/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(jsonData)
+        });
+
+        if (response.ok) {
+            // Handle success, e.g., reload the page or display a message
+            window.location.reload();
+        } else {
+            // Handle errors
+            console.error('Error:', response.statusText);
+        }
+    }
+
+    async function deleteOperation(operationId) {
+        if (!confirm('Ви впевнені, що хочете видалити цю операцію?')) {
+            return;
+        }
+
+        const response = await fetch(`/operation/operation/${operationId}`, {
+            method: 'DELETE',
+        });
+
+        if (response.ok) {
+            window.location.reload();
+        } else {
+            console.error('Error:', response.statusText);
+        }
+    }
+</script>
+{% endblock %}

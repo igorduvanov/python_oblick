@@ -1,0 +1,43 @@
+{% extends "templates/base.html" %}
+
+{% block content %}
+<form id="login-form" method="post">
+    <div class="container">
+      <label for="uname"><b>Username</b></label>
+      <input id="username" type="text" placeholder="Enter Username" name="username" required>
+
+      <label for="psw"><b>Password</b></label>
+      <input id="password" type="password" placeholder="Enter Password" name="password" required>
+
+      <button type="submit">Login</button>
+    </div>
+</form>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.getElementById('login-form').addEventListener('submit', async function(event) {
+  event.preventDefault();
+  const username = document.getElementById('username').value;
+  const password = document.getElementById('password').value;
+  
+  const response = await fetch('/login', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+    },
+    body: `username=${encodeURIComponent(username)}&password=${encodeURIComponent(password)}`,
+  });
+
+  const data = await response.json();
+  
+  if (response.ok) {
+    // Set the cookie
+    document.cookie = `accessToken=${data.access_token}; path=/; max-age=1800`; 
+    // Redirect to the dashboard page
+    window.location.href = '/index';
+  } else {
+  }
+});
+</script>
+{% endblock %}

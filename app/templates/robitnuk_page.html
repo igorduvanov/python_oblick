@@ -1,0 +1,149 @@
+{% extends "templates/base.html" %}
+
+{% block content %}
+<a href="/index">Назад до головної сторінки</a>
+
+    <h1>таблиця робітників для CRUD операцій</h1>
+
+    <form id="robitnukForm">
+        <input type="text" name="name" placeholder="Назва">
+        <input type="text" name="notes" placeholder="Нотатки">
+        <button type="button" onclick="submitForm()">добавити</button>
+    </form>
+
+    <h2>таблиця робітників</h2>
+    <form id="searchForm" onsubmit="event.preventDefault(); searchAndSort();">
+        <input type="text" name="search" placeholder="Пошук за назвою" value="{{ search if search }}">
+        <select name="sort_by">
+            <option value="">Сортувати за роком</option>
+            <option value="year_asc" {% if sort_by == "year_asc" %}selected{% endif %}>За зростанням</option>
+            <option value="year_desc" {% if sort_by == "year_desc" %}selected{% endif %}>За спаданням</option>
+        </select>
+        <button type="submit">Пошук і сортування</button>
+    </form>
+    
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>ПІБ</th>
+            <th>Нотатки</th>
+            <th>Дата створена</th>
+            <th>Дата оновлена</th>
+            <th>Дії</th>
+        </tr>
+        {% for robitnuk in robitnuk %}
+            <tr>
+                <td>{{ robitnuk.id }}</td>
+                <td>{{ robitnuk.name }}</td>
+                <td>{{ robitnuk.notes }}</td>
+                <td>{{ robitnuk.date_created.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+                <td>{{ robitnuk.date_updated.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+                <td>
+                    <button onclick="editRobitnukName({{ robitnuk.id }})">редагувати ПІБ</button>
+                    <button onclick="editRobitnukNotes({{ robitnuk.id }})">Редагувати нотатки</button>
+                    <button onclick="deleteRobitnuk({{ robitnuk.id }})">Видалити</button>
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}
+
+{% block scripts %}
+<script>
+     function searchAndSort() {
+        const searchForm = document.getElementById('searchForm');
+        const formData = new FormData(searchForm);
+        const searchParams = new URLSearchParams(formData);
+
+        window.location.href = `/robitnuk/robitnuk_page?${searchParams.toString()}`;
+    }
+    async function submitForm() {
+        const form = document.getElementById('robitnukForm');
+        const formData = new FormData(form);
+        const jsonData = {};
+
+        for (const [key, value] of formData.entries()) {
+            jsonData[key] = value;
+        }
+        const response = await fetch('/robitnuk/robitnuk/', {
+            method: 'POST',
+            headers: {
+           'Content-Type': 'application/json'
+             },
+            body: JSON.stringify(jsonData)
+        });
+
+        if (response.ok) {
+            // Handle success, e.g., reload the page or display a message
+            window.location.reload();
+        } else {
+            // Handle errors
+            console.error('Error:', response.statusText);
+        }
+    }
+    async function editRobitnukName(robitnukId) {
+        const newName = prompt("введіть нове ПІб (порожньо, щоб не змінювати):");
+
+        const jsonData = {};
+
+        if (newName !== "") {
+            jsonData["name"] = newName;
+        }
+
+        const response = await fetch(`/robitnuk/robitnuk/${robitnukId}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(jsonData)
+        });
+
+        if (response.ok) {
+            window.location.reload();
+        } else {
+            console.error('Error:', response.statusText);
+        }
+    }
+
+    async function editRobitnukNotes(robitnukId) {
+        const newNotes = prompt("введіть нову нотатки (порожньо, щоб не змінювати):");
+
+        const jsonData = {};
+
+        if (newNotes !== "") {
+            jsonData["notes"] = newNotes;
+        }
+
+        const response = await fetch(`/robitnuk/robitnuk/${robitnukId}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(jsonData)
+        });
+
+        if (response.ok) {
+            window.location.reload();
+        } else {
+            console.error('Error:', response.statusText);
+        }
+    }
+
+
+    async function deleteRobitnuk(robitnukId) {
+        if (!confirm('Ви дійсно хочете видалити цього робітника?')) {
+            return;
+        }
+
+        const response = await fetch(`/robitnuk/robitnuk/${robitnukId}`, {
+             method: 'DELETE',
+        });
+
+        if (response.ok) {
+            window.location.reload();
+        } else {
+            console.error('Error:', response.statusText);
+        }
+    }
+</script>
+{% endblock %}

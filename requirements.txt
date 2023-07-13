@@ -1,11 +1,33 @@
-fastapi[all]
-sqlalchemy
-
-
+#встановлення плаганів
+pip install fastapi[all]
+pip install sqlalchemy
+pip install alembic
+pip install python-jose[cryptography]
+#запуск проекту з main.py
+uvicorn app.main:app --reload
+#міграції
+alembic revision --autogenerate -m "Initial migration"
+alembic upgrade head
+#venv 
+Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope Process 
+.\venv\Scripts\Activate
+c:/xampp/htdocs/python_oblick/venv/Scripts/Activate.ps1    
+#дані на форму авторизації
+login password
+admin admin 
+workshop workshop 
+storage storage
+#структура проекту 
 python_oblick/
 │
 ├── app/
 │   ├── main.py
+│   ├── workshop/
+│   │   ├── workshop_routers.py
+│   │   ├── workshop_templates/
+│   │   │   ├── workshop_denzvit.html
+│   ├── storage/
+│   │   ├── storage_routers.py
 │   ├── models/
 │   │   ├── __init__.py
 │   │   ├── base.py
@@ -19,7 +41,8 @@ python_oblick/
 │   │   ├── operation.py
 │   │   ├── resur.py
 │   │   ├── marshryt.py
-│   │   └── denzvit.py
+│   │   ├── denzvit.py 
+│   │   └── users.py
 │   ├── routers/
 │   │   ├── __init__.py
 │   │   ├── odvumir.py
@@ -32,12 +55,23 @@ python_oblick/
 │   │   ├── operation.py
 │   │   ├── resur.py
 │   │   ├── marshryt.py
-│   │   └── denzvit.py
+│   │   ├── denzvit.py
+│   │   ├── users.py
+│   │   ├── authorization.py
 │   ├── templates/
 │   │   ├── base.html
 │   │   ├── index.html
 │   │   ├── odvumir_page.html
-│   ├── schemas.py
+│   │   ├── oper_page.html
+│   │   ├── robitnuk_page.html
+│   │   ├── material_page.html
+│   │   ├── price_page.html
+│   │   ├── users_page.html
+│   │   ├── auth_page.html
+│   │   ├── storage_page.html
+│   │   ├── workshop_page.html
+│   ├── static/
+│   │   ├── style.css
 │   ├── config.py
 │   ├── DB.db
 │   ├── templates.py

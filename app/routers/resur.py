@@ -83,7 +83,7 @@ async def read_resur_page(request: Request, db: Session = Depends(get_db), searc
 
     resurs = resurs.all()
 
-    return templates.TemplateResponse("resur_page.html",
+    return templates.TemplateResponse("/templates/resur_page.html",
                                       {"request": request, "resurs": resurs, "search": search, "sort_by": sort_by, "year": year,
                                       "pereliks": pereliks, "operations": operations, "odvumirs": odvumirs})
 

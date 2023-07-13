@@ -80,7 +80,7 @@ async def read_denzvit_page(request: Request, db: Session = Depends(get_db), sea
 
     denzvits = denzvits.all()
 
-    return templates.TemplateResponse("denzvit_page.html",
+    return templates.TemplateResponse("/templates/denzvit_page.html",
                                       {"request": request, "denzvits": denzvits, "search": search, "sort_by": sort_by, "year": year,
                                        "robitnuks": robitnuks, "operations": operations, "odvumirs": odvumirs})
 

@@ -66,7 +66,7 @@ async def read_operation_page(request: Request, db: Session = Depends(get_db), s
         elif sort_by == "year_desc":
             operations = operations.order_by(Operation.date_created.desc())
 
-    return templates.TemplateResponse("operation_page.html",
+    return templates.TemplateResponse("/templates/operation_page.html",
                                       {"request": request, "operations": operations, "search": search, "sort_by": sort_by,
                                        "pereliks": pereliks, "opers": opers})
 

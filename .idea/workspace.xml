@@ -6,10 +6,30 @@
   <component name="ChangeListManager">
     <list default="true" id="019b164c-fc17-44ba-8994-bf02091f718e" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/DB.db" beforeDir="false" afterPath="$PROJECT_DIR$/app/DB.db" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/main.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/routers/authorization.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/routers/authorization.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/routers/index_router.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/routers/index_router.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/storage/storage_routers.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/storage/storage_routers.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/templates.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/templates/auth_page.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/auth_page.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/templates/denzvit_page.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/denzvit_page.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/templates/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/templates/marshryt_page.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/marshryt_page.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/templates/material_page.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/material_page.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/templates/nakladna_page.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/nakladna_page.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/templates/odvumir_page.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/odvumir_page.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/templates/oper_page.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/oper_page.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/templates/operation_page.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/operation_page.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/templates/perelik_page.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/perelik_page.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/templates/price_page.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/price_page.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/templates/resur_page.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/resur_page.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/templates/robitnuk_page.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/robitnuk_page.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/templates/storage_page.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/storage_page.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/templates/unit_page.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/unit_page.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/templates/users_page.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/users_page.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/templates/workshop_page.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/workshop_page.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/workshop/workshop_routers.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/workshop/workshop_routers.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -57,6 +77,7 @@
       <workItem from="1688978474258" duration="6800000" />
       <workItem from="1689052015294" duration="1552000" />
       <workItem from="1689070148862" duration="3378000" />
+      <workItem from="1689225429560" duration="1378000" />
     </task>
     <servers />
   </component>

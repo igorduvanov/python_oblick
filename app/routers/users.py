@@ -69,7 +69,7 @@ async def read_users_page(request: Request, db: Session = Depends(get_db), searc
 
     users = users.all()
 
-    return templates.TemplateResponse("users_page.html", {"request": request, "users": users, "search": search, "sort_by": sort_by})
+    return templates.TemplateResponse("/templates/users_page.html", {"request": request, "users": users, "search": search, "sort_by": sort_by})
 
 @router.put("/users/{user_id}")
 async def update_user(user_id: int, user: UserUpdate, db: Session = Depends(get_db)):

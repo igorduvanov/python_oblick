@@ -77,7 +77,7 @@ async def read_material_page(request: Request, db: Session = Depends(get_db), se
 
     materials = materials.all()
 
-    return templates.TemplateResponse("material_page.html",
+    return templates.TemplateResponse("/templates/material_page.html",
                                       {"request": request, "materials": materials, "search": search, "sort_by": sort_by, "year": year,
                                        "pereliks": pereliks, "odvumirs": odvumirs})
 

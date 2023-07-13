@@ -1,0 +1,53 @@
+{% extends "templates/base.html" %}
+{% block content %}
+<h1>Добавлення нового дензвиту</h1>
+
+<form id="denzvitForm">
+    <div id="fieldContainer">
+        <div class="fieldRow">
+            <input type="number" name="id_robitnuk[]" placeholder="ID Робітника">
+            <input type="number" name="id_operation[]" placeholder="ID Операції">
+            <input type="number" name="kilkist[]" placeholder="Кількість">
+            <input type="number" name="id_odvumir[]" placeholder="ID Одвиміру">
+        </div>
+    </div>
+
+    <button type="button" id="addFieldButton">Додати поле</button>
+    <button type="button" onclick="submitForm()">Відправити</button>
+</form>
+
+<script>
+    document.getElementById('addFieldButton').addEventListener('click', function() {
+        var container = document.getElementById('fieldContainer');
+        var newFieldRow = document.createElement('div');
+        newFieldRow.classList.add('fieldRow');
+        newFieldRow.innerHTML = `
+            <input type="number" name="id_robitnuk[]" placeholder="ID Робітника">
+            <input type="number" name="id_operation[]" placeholder="ID Операції">
+            <input type="number" name="kilkist[]" placeholder="Кількість">
+            <input type="number" name="id_odvumir[]" placeholder="ID Одвиміру">
+        `;
+        container.appendChild(newFieldRow);
+    });
+
+    async function submitForm() {
+        var form = document.getElementById('denzvitForm');
+        var formData = new FormData(form);
+
+        const response = await fetch('/workshop/workshop_denzvit_form', {
+            method: 'POST',
+            body: formData
+        });
+
+        const result = await response.json();
+
+        if (result.error) {
+            alert('Error: ' + result.error);
+        } else {
+            alert('Denzvit added successfully');
+            form.reset();
+        }
+    }
+</script>
+
+{% endblock %}

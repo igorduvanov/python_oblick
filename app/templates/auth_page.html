@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "templates/base.html" %}
 
 {% block content %}
 <form id="login-form" method="post">
@@ -37,7 +37,6 @@ document.getElementById('login-form').addEventListener('submit', async function(
     // Redirect to the dashboard page
     window.location.href = '/index';
   } else {
-    // Handle login failure (e.g., display an error message)
   }
 });
 </script>

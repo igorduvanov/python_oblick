@@ -67,7 +67,7 @@ async def read_odvumir_page(request: Request, db: Session = Depends(get_db), sea
 
     odvumirs = odvumirs.all()
 
-    return templates.TemplateResponse("odvumir_page.html", {"request": request, "odvumirs": odvumirs, "search": search, "sort_by": sort_by})
+    return templates.TemplateResponse("/templates/odvumir_page.html", {"request": request, "odvumirs": odvumirs, "search": search, "sort_by": sort_by})
 
 
 @router.put("/odvumir/{odvumir_id}")

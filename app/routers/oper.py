@@ -75,7 +75,7 @@ async def read_oper_page(request: Request, db: Session = Depends(get_db), search
 
     oper = oper.all()
 
-    return templates.TemplateResponse("oper_page.html",
+    return templates.TemplateResponse("/templates/oper_page.html",
                                       {"request": request, "oper": oper, "search": search, "sort_by": sort_by})
 
 

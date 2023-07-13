@@ -67,7 +67,7 @@ async def read_robitnuk_page(request: Request, db: Session = Depends(get_db), se
 
     robitnuk = robitnuk.all()
 
-    return templates.TemplateResponse("robitnuk_page.html", {"request": request, "robitnuk": robitnuk, "search": search, "sort_by": sort_by})
+    return templates.TemplateResponse("/templates/robitnuk_page.html", {"request": request, "robitnuk": robitnuk, "search": search, "sort_by": sort_by})
 
 
 @router.put("/robitnuk/{robitnuk_id}")

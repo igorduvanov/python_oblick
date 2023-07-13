@@ -82,7 +82,7 @@ async def read_nakladna_page(request: Request, db: Session = Depends(get_db), se
     # Create a dictionary mapping unit ids to unit names
     unit_names = {unit.id: unit.name for unit in units}
 
-    return templates.TemplateResponse("nakladna_page.html",
+    return templates.TemplateResponse("/templates/nakladna_page.html",
             {"request":request, "nakladnas": nakladnas, "search": search, "sort_by": sort_by,
             "units": units, "unit_names": unit_names, "pereliks": pereliks,"odvumirs": odvumirs})
 

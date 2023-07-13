@@ -11,10 +11,10 @@ SECRET_KEY = "secret"
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
 
-router = APIRouter()  # Define router here
+router = APIRouter()  
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/login")
 
-class Token(BaseModel):  # Define Token model here
+class Token(BaseModel):  
     access_token: str
     token_type: str
 

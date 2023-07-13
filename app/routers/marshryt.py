@@ -75,7 +75,7 @@ async def read_marshryt_page(request: Request, db: Session = Depends(get_db), se
 
     marshryts = marshryts.all()
 
-    return templates.TemplateResponse("marshryt_page.html",
+    return templates.TemplateResponse("/templates/marshryt_page.html",
                                       {"request": request, "marshryts": marshryts, "search": search, "sort_by": sort_by, "year": year,
                                       "pereliks": pereliks, "operations": operations})
 

@@ -10,11 +10,11 @@ from app.routers.index_router import router as index_router
 
 app = FastAPI()
 
-templates = Jinja2Templates(directory="app/templates")
+templates = Jinja2Templates(directory="app")
 #головна сторінка за замовчуванням
 @app.get("/", response_class=HTMLResponse)
 async def read_root(request: Request):
-    return templates.TemplateResponse("auth_page.html", {"request": request})
+    return templates.TemplateResponse("templates/auth_page.html", {"request": request})
 
 #css
 app.mount("/static", StaticFiles(directory="app/static"), name="static")
@@ -37,4 +37,5 @@ app.include_router(authorization.router, prefix="/login")
 app.include_router(index_router, prefix="/index")
 app.include_router(workshop_router, prefix="/workshop")
 app.include_router(storage_router, prefix="/storage")
+# роутер для цеху
 

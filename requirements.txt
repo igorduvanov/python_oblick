@@ -24,6 +24,8 @@ python_oblick/
 │   ├── main.py
 │   ├── workshop/
 │   │   ├── workshop_routers.py
+│   │   ├── workshop_templates/
+│   │   │   ├── workshop_denzvit.html
 │   ├── storage/
 │   │   ├── storage_routers.py
 │   ├── models/

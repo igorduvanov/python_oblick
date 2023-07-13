@@ -66,7 +66,7 @@ async def read_unit_page(request: Request, db: Session = Depends(get_db), search
 
     units = units.all()
 
-    return templates.TemplateResponse("unit_page.html", {"request": request, "units": units, "search": search, "sort_by": sort_by})
+    return templates.TemplateResponse("/templates/unit_page.html", {"request": request, "units": units, "search": search, "sort_by": sort_by})
 
 @router.put("/unit/{unit_id}")
 async def update_unit(unit_id: int, unit: UnitUpdate, db: Session = Depends(get_db)):

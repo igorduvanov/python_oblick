@@ -76,7 +76,7 @@ async def read_perelik_page(request: Request, db: Session = Depends(get_db), sea
 
     pereliks = pereliks.all()
 
-    return templates.TemplateResponse("perelik_page.html",
+    return templates.TemplateResponse("/templates/perelik_page.html",
                                       {"request": request, "pereliks": pereliks, "search": search, "sort_by": sort_by})
 
 

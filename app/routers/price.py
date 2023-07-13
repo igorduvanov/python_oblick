@@ -79,7 +79,7 @@ async def read_price_page(request: Request, db: Session = Depends(get_db), searc
 
     prices = prices.all()
 
-    return templates.TemplateResponse("price_page.html",
+    return templates.TemplateResponse("/templates/price_page.html",
                                       {"request": request, "prices": prices, "search": search, "sort_by": sort_by,
                                        "materials": materials, "odvumirs": odvumirs})
 
